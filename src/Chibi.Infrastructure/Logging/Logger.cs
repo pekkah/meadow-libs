@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Exception = Mono.WebBrowser.Exception;
 
 namespace Chibi.Infrastructure.Logging
 {
