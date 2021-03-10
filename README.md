@@ -1,2 +1,1 @@
-# meadow-libs
- 
+# Libraries for Meadow F7 Micro
