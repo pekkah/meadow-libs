@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace Chibi.Infrastructure.Logging
 {
@@ -16,14 +15,16 @@ namespace Chibi.Infrastructure.Logging
         public void LogInfo(string message)
         {
             var name = _name;
-            Task.Run(() => Trace.WriteLine($"[INFO] {DateTime.Now:T} {name}: {message}"));
+            //Task.Run(() => Trace.WriteLine($"[INFO] {DateTime.Now:T} {name}: {message}"));
+            Trace.WriteLine($"[INFO] {DateTime.Now:T} {name}: {message}");
         }
 
         [Conditional("DEBUG")]
         public void LogDebug(string message)
         {
             var name = _name;
-            Task.Run(() => Trace.WriteLine($"[DEBUG] {DateTime.Now:T} {name}: {message}"));
+            //Task.Run(() => Trace.WriteLine($"[DEBUG] {DateTime.Now:T} {name}: {message}"));
+            Trace.WriteLine($"[DEBUG] {DateTime.Now:T} {name}: {message}");
         }
 
         public static Logger GetLogger(string name)
@@ -39,7 +40,8 @@ namespace Chibi.Infrastructure.Logging
         public void LogError(string message)
         {
             var name = _name;
-            Task.Run(() => Trace.WriteLine($"[ERROR] {DateTime.Now:T} {name}: {message}"));
+            //Task.Run(() => Trace.WriteLine($"[ERROR] {DateTime.Now:T} {name}: {message}"));
+            Trace.WriteLine($"[ERROR] {DateTime.Now:T} {name}: {message}");
         }
     }
 }
