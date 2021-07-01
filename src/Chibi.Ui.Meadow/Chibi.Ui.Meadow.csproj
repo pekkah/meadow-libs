@@ -4,7 +4,7 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Meadow.Foundation.Displays.GraphicsLibrary" Version="0.*" />
+    <PackageReference Include="Meadow.Foundation.Displays.GraphicsLibrary" Version="0.9.42" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chibi.Infrastructure\Chibi.Infrastructure.csproj" />
