@@ -8,7 +8,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Meadow.Foundation" Version="0.29.0" />
-    <PackageReference Include="Meadow.F7" Version="0.27.0" />
+    <PackageReference Include="Meadow.F7" Version="0.27.1" />
     <PackageReference Include="YamlDotNet" Version="11.2.1" />
   </ItemGroup>
   <ItemGroup>

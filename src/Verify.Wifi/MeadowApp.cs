@@ -61,7 +61,7 @@ namespace Verify.Wifi
                     throw new InvalidOperationException("WIFI null");
 
                 // this works with latest OS version (caused connection failure on earlier version)
-                Device.WiFiAdapter.SetAntenna(AntennaType.OnBoard);
+                Device.WiFiAdapter.SetAntenna(AntennaType.External);
 
                 Console.WriteLine($"Connecting to {networkName}...");
                 ConnectionStatus connectionStatus;
