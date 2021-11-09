@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,77 +7,59 @@ using Meadow;
 using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Leds;
-using Meadow.Gateway.WiFi;
-using Meadow.Gateways;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace Verify.Wifi
 {
-    public class Configuration
-    {
-        public string Ssid { get; set; }
-
-        public string Password { get; set; }
-    }
-
     public class MeadowApp : App<F7MicroV2, MeadowApp>
     {
-        private const string ConfigFilePath = "/meadow0/appSettings.Local.yml";
+        private TaskCompletionSource<object?> _wifiConnectedSource;
+
+        public MeadowApp()
+        {
+            _wifiConnectedSource = new TaskCompletionSource<object?>();
+            Device.WiFiAdapter.WiFiConnected += (sender, args) =>
+            {
+                Console.WriteLine("Connected");
+                _wifiConnectedSource.TrySetResult(null);
+            };
+
+            Device.WiFiAdapter.WiFiDisconnected += (sender, args) =>
+            {
+                Console.WriteLine("Disconnected");
+                _wifiConnectedSource.SetCanceled();
+            };
+        }
+
+        private async Task WaitConnected()
+        {
+            Console.WriteLine("Waiting connection");
+            if (Device.WiFiAdapter.IsConnected)
+                return;
+
+            await _wifiConnectedSource.Task;
+            _wifiConnectedSource = new TaskCompletionSource<object?>();
+            Console.WriteLine("Connected");
+        }
 
         public async Task RunAsync()
         {
+            StartHeartbeat();
+
+            OutputDeviceInfo();
+            OutputMeadowOSInfo();
+
+            OutputDeviceConfigurationInfo();
+
             var rgbPwmLed = new RgbPwmLed(
                 Device,
                 Device.Pins.OnboardLedRed,
                 Device.Pins.OnboardLedGreen,
                 Device.Pins.OnboardLedBlue);
 
-
-            if (!File.Exists(ConfigFilePath))
-                throw new InvalidOperationException(
-                    $"Create appSettings.Local.ym with following lines\r\nssid: \"YOUR_SSID\"\r\npassword: \"YOUR_PASSWORD\"");
-
-            var configFile = await File.ReadAllTextAsync(ConfigFilePath);
-            var input = new StringReader(configFile);
-
-            var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(CamelCaseNamingConvention.Instance)
-                .Build();
-
-            var configuration = deserializer.Deserialize<Configuration>(input);
-
-            var networkName = configuration.Ssid;
-            var networkPassword = configuration.Password;
-
-
-            async Task Connect()
-            {
-                Console.WriteLine($"Connecting to {networkName}...");
-                ConnectionStatus connectionStatus;
-                while ((connectionStatus = (await Device.WiFiAdapter.Connect(networkName, networkPassword)
-                           .ConfigureAwait(false)).ConnectionStatus)
-                       != ConnectionStatus.Success)
-                {
-                    rgbPwmLed.SetColor(Color.Red);
-                    Console.WriteLine($"WiFi connect failed with {connectionStatus}");
-                    await Task.Delay(TimeSpan.FromSeconds(5));
-                    MeadowOS.CurrentDevice.Reset();
-                }
-
-                Console.WriteLine("Network connected...");
-            }
-
             try
             {
                 rgbPwmLed.SetColor(Color.Blue);
-                Console.WriteLine("Initialize WiFi adapter...");
-
-                // this works with latest OS version (caused connection failure on earlier version)
-                // throwing Coprocessor not ready
-                //Device.WiFiAdapter.SetAntenna(AntennaType.External);
-
-                await Connect();
+                await WaitConnected();
             }
             catch (Exception ex)
             {
@@ -87,10 +68,8 @@ namespace Verify.Wifi
                 return;
             }
 
-
             var counter = 0;
             var stopwatch = new Stopwatch();
-
 
             Console.WriteLine($"Before request loop. GetTotalMemory: {GC.GetTotalMemory(false) / 1000}KB");
 
@@ -103,19 +82,20 @@ namespace Verify.Wifi
                     // comment out the above client to use new client per request
                     using var client = new HttpClient();
                     rgbPwmLed.SetColor(Color.LightYellow);
-                    Console.WriteLine($"Request {++counter}");
+                    Console.WriteLine($"Request {++counter} {DateTime.Now}");
                     stopwatch.Restart();
 
                     // just in case we get stuck waiting for response
                     using var timeoutSource = new CancellationTokenSource();
-                    timeoutSource.CancelAfter(TimeSpan.FromMinutes(2));
-                    
-                    using var response = await client.GetAsync("https://postman-echo.com/get?foo1=bar1&foo2=bar2", timeoutSource.Token)
+                    timeoutSource.CancelAfter(TimeSpan.FromSeconds(90));
+
+                    using var response = await client
+                        .GetAsync("https://postman-echo.com/get?foo1=bar1&foo2=bar2", timeoutSource.Token)
                         .ConfigureAwait(false);
 
                     stopwatch.Stop();
                     Console.WriteLine(
-                        $"Elapsed: {stopwatch.Elapsed.TotalSeconds}s, Status: {response.StatusCode}, GetTotalMemory: {GC.GetTotalMemory(false) / 1000}KB");
+                        $"Elapsed: {stopwatch.Elapsed.TotalSeconds}s, Status: {response.StatusCode}, GetTotalMemory: {GC.GetTotalMemory(false) / 1000}KB, {DateTime.Now}");
                     rgbPwmLed.Stop();
                     rgbPwmLed.SetColor(Color.Green);
                     await Task.Delay(TimeSpan.FromSeconds(5))
@@ -128,8 +108,7 @@ namespace Verify.Wifi
                     await Task.Delay(TimeSpan.FromMinutes(1))
                         .ConfigureAwait(false);
 
-                    await Device.WiFiAdapter.Disconnect(true);
-                    await Connect();
+                    await WaitConnected();
                 }
                 catch (Exception ex)
                 {
@@ -142,5 +121,72 @@ namespace Verify.Wifi
                 Console.WriteLine("Cycling...");
             }
         }
+
+        protected string FormatMacAddressString(byte[] address)
+        {
+            var result = string.Empty;
+
+            for (var index = 0; index < address.Length; index++)
+            {
+                result += address[index].ToString("X2");
+                if (index != address.Length - 1) result += ":";
+            }
+
+            return result;
+        }
+
+        private void OutputDeviceInfo()
+        {
+            Console.WriteLine($"Device name: {Device.Information.DeviceName}");
+            Console.WriteLine($"Processor serial number: {Device.Information.ProcessorSerialNumber}");
+            Console.WriteLine($"Processor ID: {Device.Information.ChipID}");
+            Console.WriteLine($"Model: {Device.Information.Model}");
+            Console.WriteLine($"Processor type: {Device.Information.ProcessorType}");
+            Console.WriteLine($"Product: {Device.Information.Model}");
+            Console.WriteLine($"Coprocessor type: {Device.Information.CoprocessorType}");
+            Console.WriteLine($"Coprocessor firmware version: {Device.Information.CoprocessorOSVersion}");
+        }
+
+        private void OutputMeadowOSInfo()
+        {
+            Console.WriteLine($"OS version: {MeadowOS.SystemInformation.OSVersion}");
+            Console.WriteLine($"Mono version: {MeadowOS.SystemInformation.MonoVersion}");
+            Console.WriteLine($"Build date: {MeadowOS.SystemInformation.OSBuildDate}");
+        }
+
+        private void OutputDeviceConfigurationInfo()
+        {
+            try
+            {
+                Console.WriteLine($"Automatically connect to network: {Device.WiFiAdapter.AutomaticallyStartNetwork}");
+
+                Console.WriteLine($"Automatically reconnect: {Device.WiFiAdapter.AutomaticallyReconnect}");
+
+                Console.WriteLine($"Get time at startup: {Device.WiFiAdapter.GetNetworkTimeAtStartup}");
+                //Console.WriteLine($"NTP Server: {Device.WiFiAdapter.NtpServer}");
+
+                Console.WriteLine($"Default access point: {Device.WiFiAdapter.DefaultAcessPoint}");
+
+                Console.WriteLine($"Maximum retry count: {Device.WiFiAdapter.MaximumRetryCount}");
+
+                Console.WriteLine($"MAC address: {FormatMacAddressString(Device.WiFiAdapter.MacAddress)}");
+                Console.WriteLine($"Soft AP MAC address: {FormatMacAddressString(Device.WiFiAdapter.ApMacAddress)}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        protected void StartHeartbeat()
+        {
+            Task.Run(async () => {
+                while (true) {
+                    Console.WriteLine("Beep...");
+                    await Task.Delay(10000);
+                }
+            });
+        }
+
     }
 }
