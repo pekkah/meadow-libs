@@ -181,9 +181,13 @@ namespace Verify.Wifi
         protected void StartHeartbeat()
         {
             Task.Run(async () => {
-                while (true) {
+                while (true)
+                {
+                    var color = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Gray;
                     Console.WriteLine("Beep...");
-                    await Task.Delay(10000);
+                    Console.ForegroundColor = color;
+                    await Task.Delay(TimeSpan.FromSeconds(30));
                 }
             });
         }
