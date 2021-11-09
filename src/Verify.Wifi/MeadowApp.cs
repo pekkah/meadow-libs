@@ -21,7 +21,7 @@ namespace Verify.Wifi
         public string Password { get; set; }
     }
 
-    public class MeadowApp : App<F7Micro, MeadowApp>
+    public class MeadowApp : App<F7MicroV2, MeadowApp>
     {
         private const string ConfigFilePath = "/meadow0/appSettings.Local.yml";
 
@@ -50,19 +50,9 @@ namespace Verify.Wifi
             var networkName = configuration.Ssid;
             var networkPassword = configuration.Password;
 
-            try
+
+            async Task Connect()
             {
-                rgbPwmLed.SetColor(Color.Blue);
-                Console.WriteLine("Initialize WiFi adapter...");
-                await Device.InitWiFiAdapter()
-                    .ConfigureAwait(false);
-
-                if (Device.WiFiAdapter == null)
-                    throw new InvalidOperationException("WIFI null");
-
-                // this works with latest OS version (caused connection failure on earlier version)
-                Device.WiFiAdapter.SetAntenna(AntennaType.External);
-
                 Console.WriteLine($"Connecting to {networkName}...");
                 ConnectionStatus connectionStatus;
                 while ((connectionStatus = (await Device.WiFiAdapter.Connect(networkName, networkPassword)
@@ -76,6 +66,18 @@ namespace Verify.Wifi
                 }
 
                 Console.WriteLine("Network connected...");
+            }
+
+            try
+            {
+                rgbPwmLed.SetColor(Color.Blue);
+                Console.WriteLine("Initialize WiFi adapter...");
+
+                // this works with latest OS version (caused connection failure on earlier version)
+                // throwing Coprocessor not ready
+                //Device.WiFiAdapter.SetAntenna(AntennaType.External);
+
+                await Connect();
             }
             catch (Exception ex)
             {
@@ -104,7 +106,7 @@ namespace Verify.Wifi
                     stopwatch.Restart();
 
                     // normally on desktop I wouldn't use the dispose on the response
-                    using var response = await client.GetAsync("https://postman-echo.com/get?foo1=bar1&foo2=bar2")
+                    var response = await client.GetAsync("https://postman-echo.com/get?foo1=bar1&foo2=bar2")
                         .ConfigureAwait(false);
 
                     stopwatch.Stop();
@@ -118,7 +120,12 @@ namespace Verify.Wifi
                 catch (HttpRequestException x)
                 {
                     rgbPwmLed.SetColor(Color.Yellow);
-                    Console.WriteLine("Request failed {0}. Continuing.", x);
+                    Console.WriteLine("Request failed {0}. Continuing after 1min delay.", x);
+                    await Task.Delay(TimeSpan.FromMinutes(1))
+                        .ConfigureAwait(false);
+
+                    await Device.WiFiAdapter.Disconnect(true);
+                    await Connect();
                 }
                 catch (Exception ex)
                 {
