@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Meadow;
 using Meadow.Devices;
@@ -105,8 +106,11 @@ namespace Verify.Wifi
                     Console.WriteLine($"Request {++counter}");
                     stopwatch.Restart();
 
-                    // normally on desktop I wouldn't use the dispose on the response
-                    var response = await client.GetAsync("https://postman-echo.com/get?foo1=bar1&foo2=bar2")
+                    // just in case we get stuck waiting for response
+                    using var timeoutSource = new CancellationTokenSource();
+                    timeoutSource.CancelAfter(TimeSpan.FromMinutes(2));
+                    
+                    using var response = await client.GetAsync("https://postman-echo.com/get?foo1=bar1&foo2=bar2", timeoutSource.Token)
                         .ConfigureAwait(false);
 
                     stopwatch.Stop();
