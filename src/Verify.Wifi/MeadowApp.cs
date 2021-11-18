@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,25 +31,14 @@ namespace Verify.Wifi
             };
         }
 
-        private async Task WaitConnected()
-        {
-            Console.WriteLine("Waiting connection");
-            if (Device.WiFiAdapter.IsConnected)
-                return;
-
-            await _wifiConnectedSource.Task;
-            _wifiConnectedSource = new TaskCompletionSource<object?>();
-            Console.WriteLine("Connected");
-        }
-
         public async Task RunAsync()
         {
             StartHeartbeat();
 
             OutputDeviceInfo();
             OutputMeadowOSInfo();
-
             OutputDeviceConfigurationInfo();
+            OutputLibraryInfo();
 
             var rgbPwmLed = new RgbPwmLed(
                 Device,
@@ -87,7 +77,7 @@ namespace Verify.Wifi
 
                     // just in case we get stuck waiting for response
                     using var timeoutSource = new CancellationTokenSource();
-                    timeoutSource.CancelAfter(TimeSpan.FromSeconds(90));
+                    timeoutSource.CancelAfter(TimeSpan.FromSeconds(30));
 
                     using var response = await client
                         .GetAsync("https://postman-echo.com/get?foo1=bar1&foo2=bar2", timeoutSource.Token)
@@ -110,11 +100,20 @@ namespace Verify.Wifi
 
                     await WaitConnected();
                 }
+                catch (TaskCanceledException x)
+                {
+                    rgbPwmLed.SetColor(Color.Yellow);
+                    Console.WriteLine("Request timeout. Continuing after 1min delay.");
+                    await Task.Delay(TimeSpan.FromMinutes(1))
+                        .ConfigureAwait(false);
+
+                    await WaitConnected();
+                }
                 catch (Exception ex)
                 {
                     rgbPwmLed.SetColor(Color.Red);
                     Console.WriteLine(ex);
-                    Console.WriteLine($"In exception. GetTotalMemory: {GC.GetTotalMemory(false) / 1000}KB");
+                    Console.WriteLine($"In exception: GetTotalMemory: {GC.GetTotalMemory(false) / 1000}KB");
                     break;
                 }
 
@@ -135,16 +134,41 @@ namespace Verify.Wifi
             return result;
         }
 
+        protected void StartHeartbeat()
+        {
+            Task.Run(async () =>
+            {
+                while (true)
+                {
+                    var color = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.WriteLine("Beep...");
+                    Console.ForegroundColor = color;
+                    await Task.Delay(TimeSpan.FromSeconds(15));
+                }
+            });
+        }
+
+        private async Task WaitConnected()
+        {
+            Console.WriteLine("Waiting connection");
+            if (Device.WiFiAdapter.IsConnected)
+                return;
+
+            await _wifiConnectedSource.Task;
+            _wifiConnectedSource = new TaskCompletionSource<object?>();
+            Console.WriteLine("Connected");
+        }
+
         private void OutputDeviceInfo()
         {
             Console.WriteLine($"Device name: {Device.Information.DeviceName}");
-            Console.WriteLine($"Processor serial number: {Device.Information.ProcessorSerialNumber}");
-            Console.WriteLine($"Processor ID: {Device.Information.ChipID}");
             Console.WriteLine($"Model: {Device.Information.Model}");
             Console.WriteLine($"Processor type: {Device.Information.ProcessorType}");
             Console.WriteLine($"Product: {Device.Information.Model}");
             Console.WriteLine($"Coprocessor type: {Device.Information.CoprocessorType}");
             Console.WriteLine($"Coprocessor firmware version: {Device.Information.CoprocessorOSVersion}");
+            Console.WriteLine($"Hardware revision: {Device.Information.HardwareRevision}");
         }
 
         private void OutputMeadowOSInfo()
@@ -154,21 +178,28 @@ namespace Verify.Wifi
             Console.WriteLine($"Build date: {MeadowOS.SystemInformation.OSBuildDate}");
         }
 
+        private void OutputLibraryInfo()
+        {
+            var dir = Path.GetDirectoryName(typeof(MeadowApp).Assembly.Location) ??
+                      throw new InvalidOperationException("Could not get location of MeadowApp assembly");
+            var dlls = Directory.GetFiles(dir, "*.dll");
+            Console.WriteLine($"Found: {dlls.Length} dll files from {dir}");
+            foreach (var dll in dlls)
+            {
+                var versionInfo = FileVersionInfo.GetVersionInfo(dll);
+                Console.WriteLine($"{dll}: {versionInfo.FileVersion}");
+            }
+        }
+
         private void OutputDeviceConfigurationInfo()
         {
             try
             {
                 Console.WriteLine($"Automatically connect to network: {Device.WiFiAdapter.AutomaticallyStartNetwork}");
-
                 Console.WriteLine($"Automatically reconnect: {Device.WiFiAdapter.AutomaticallyReconnect}");
-
                 Console.WriteLine($"Get time at startup: {Device.WiFiAdapter.GetNetworkTimeAtStartup}");
-                //Console.WriteLine($"NTP Server: {Device.WiFiAdapter.NtpServer}");
-
                 Console.WriteLine($"Default access point: {Device.WiFiAdapter.DefaultAcessPoint}");
-
                 Console.WriteLine($"Maximum retry count: {Device.WiFiAdapter.MaximumRetryCount}");
-
                 Console.WriteLine($"MAC address: {FormatMacAddressString(Device.WiFiAdapter.MacAddress)}");
                 Console.WriteLine($"Soft AP MAC address: {FormatMacAddressString(Device.WiFiAdapter.ApMacAddress)}");
             }
@@ -177,20 +208,5 @@ namespace Verify.Wifi
                 Console.WriteLine(e.Message);
             }
         }
-
-        protected void StartHeartbeat()
-        {
-            Task.Run(async () => {
-                while (true)
-                {
-                    var color = Console.ForegroundColor;
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    Console.WriteLine("Beep...");
-                    Console.ForegroundColor = color;
-                    await Task.Delay(TimeSpan.FromSeconds(30));
-                }
-            });
-        }
-
     }
 }
