@@ -1,12 +1,11 @@
 ﻿using System;
-using Chibi.Infrastructure.Logging;
+using System.Collections.Generic;
 using Meadow.Foundation.Graphics;
 
 namespace Chibi.Ui.Meadow
 {
     public sealed class RenderingContext
     {
-        private static readonly Logger Logger = Logger.GetLogger(nameof(RenderingContext));
         private readonly GraphicsLibrary _graphics;
 
         public RenderingContext(GraphicsLibrary graphics, RenderingArea area)
@@ -78,6 +77,16 @@ namespace Chibi.Ui.Meadow
             var actualY = Area.Y + y;
 
             _graphics.DrawCircle(actualX, actualY, radius, filled: filled);
+        }
+
+        public void DrawTriangle(Point p0, Point p1, Point p2, bool colored = true, bool filled = false)
+        {
+            _graphics.DrawTriangle(Area.X+p0.X, Area.Y+p0.Y, Area.X+p1.X, Area.Y+p1.Y, Area.X+p2.X, Area.Y+p2.Y, colored, filled);
+        }
+
+        public void DrawLine(Point p0, Point p1, bool colored = true)
+        {
+            _graphics.DrawLine(Area.X + p0.X, Area.Y + p0.Y, Area.X + p1.X, Area.Y + p1.Y, colored);
         }
     }
 }
