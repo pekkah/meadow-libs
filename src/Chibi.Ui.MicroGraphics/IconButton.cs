@@ -1,7 +1,7 @@
 ﻿using System;
 using Meadow.Foundation.Graphics;
 
-namespace Chibi.Ui.Meadow
+namespace Chibi.Ui.MicroGraphics
 {
     public class IconButton : UiElement
     {
@@ -39,7 +39,7 @@ namespace Chibi.Ui.Meadow
         private void RenderWithPadding(RenderingContext context)
         {
             //todo: use VerticalLayout
-            var iconContext = context.Create(10, 6, context.Area.Width - (10*2), context.Area.Height / 2-4);
+            var iconContext = context.Create(10, 6, context.Area.Width - 10 * 2, context.Area.Height / 2 - 4);
             _icon().Render(iconContext);
 
             /*context.DrawCircle(

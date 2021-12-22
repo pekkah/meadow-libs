@@ -1,8 +1,8 @@
-﻿namespace Chibi.Ui.Meadow
+﻿namespace Chibi.Ui.MicroGraphics
 {
     public class Margin
     {
-        public static readonly Margin Zero = new Margin();
+        public static readonly Margin Zero = new();
 
         public Margin(int left, int top, int right, int bottom)
         {
@@ -16,9 +16,10 @@
         {
         }
 
-        public int Left { get; }
-        public int Top { get; }
-        public int Right { get; }
         public int Bottom { get; }
+
+        public int Left { get; }
+        public int Right { get; }
+        public int Top { get; }
     }
 }

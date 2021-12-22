@@ -1,17 +1,17 @@
 ﻿using System;
 using Meadow.Foundation.Graphics;
 
-namespace Chibi.Ui.Meadow
+namespace Chibi.Ui.MicroGraphics
 {
     public class Icon : Renderable
     {
-        public static Icon Play = new Icon(context =>
+        public static Icon Play = new(context =>
         {
             context.DrawTriangle(new Point(0), new Point(context.Area.Width, context.Area.Height / 2),
                 new Point(0, context.Area.Height));
         });
 
-        public static Icon Settings = new Icon(context =>
+        public static Icon Settings = new(context =>
         {
             var start = new Point(4, 2);
             var end = new Point(context.Area.Width - 8, context.Area.Height);

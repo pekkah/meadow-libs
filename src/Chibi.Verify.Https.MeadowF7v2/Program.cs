@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Verify.Wifi
+namespace Chibi.Verify.Https.MeadowF7v2
 {
     internal class Program
     {

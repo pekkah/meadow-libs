@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Chibi.Ui.Meadow
+namespace Chibi.Ui.MicroGraphics
 {
     public class VerticalLayout : Renderable
     {
@@ -10,13 +10,18 @@ namespace Chibi.Ui.Meadow
 
         public VerticalLayout(
             IEnumerable<Renderable> children,
-            Func<Margin> margin = null)
+            Func<Margin>? margin = null)
         {
             _children = children.ToList();
             MarginRenderable = new MarginRenderable(margin ?? (() => Margin.Zero), RenderChildren);
         }
 
         protected MarginRenderable MarginRenderable { get; }
+
+        public override void Render(RenderingContext context)
+        {
+            MarginRenderable.Render(context);
+        }
 
         protected virtual void RenderChildren(RenderingContext context)
         {
@@ -67,11 +72,6 @@ namespace Chibi.Ui.Meadow
 
                 childY += childHeight;
             }
-        }
-
-        public override void Render(RenderingContext context)
-        {
-            MarginRenderable.Render(context);
         }
     }
 }

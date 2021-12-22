@@ -1,4 +1,4 @@
-﻿namespace Chibi.Ui.Meadow
+﻿namespace Chibi.Ui.MicroGraphics
 {
     public class RenderingArea
     {
@@ -10,9 +10,10 @@
             Height = height;
         }
 
+        public int Height { get; }
+        public int Width { get; }
+
         public int X { get; }
         public int Y { get; }
-        public int Width { get; }
-        public int Height { get; }
     }
 }

@@ -9,7 +9,7 @@ using Meadow.Devices;
 using Meadow.Foundation;
 using Meadow.Foundation.Leds;
 
-namespace Verify.Wifi
+namespace Chibi.Verify.Https.MeadowF7v2
 {
     public class MeadowApp : App<F7MicroV2, MeadowApp>
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Chibi.Ui.Meadow
+namespace Chibi.Ui.MicroGraphics
 {
     public class HorizontalLayout : Renderable, IHasSize
     {
@@ -10,9 +10,9 @@ namespace Chibi.Ui.Meadow
 
         public HorizontalLayout(
             IEnumerable<Renderable> children,
-            Func<Margin> margin = null,
-            Func<Length> width = null,
-            Func<Length> height = null)
+            Func<Margin>? margin = null,
+            Func<Length>? width = null,
+            Func<Length>? height = null)
         {
             _children = children.ToList();
             MarginRenderable = new MarginRenderable(margin ?? (() => Margin.Zero), RenderChildren);
@@ -25,6 +25,11 @@ namespace Chibi.Ui.Meadow
         public Func<Length> Width { get; }
 
         public Func<Length> Height { get; }
+
+        public override void Render(RenderingContext context)
+        {
+            MarginRenderable.Render(context);
+        }
 
         protected virtual void RenderChildren(RenderingContext context)
         {
@@ -75,11 +80,6 @@ namespace Chibi.Ui.Meadow
                 child.Render(context.Create(childX, childY, childWidth, childHeight));
                 childX += childWidth;
             }
-        }
-
-        public override void Render(RenderingContext context)
-        {
-            MarginRenderable.Render(context);
         }
     }
 }

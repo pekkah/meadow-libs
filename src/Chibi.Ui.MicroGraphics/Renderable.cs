@@ -1,4 +1,4 @@
-﻿namespace Chibi.Ui.Meadow
+﻿namespace Chibi.Ui.MicroGraphics
 {
     public abstract class Renderable
     {

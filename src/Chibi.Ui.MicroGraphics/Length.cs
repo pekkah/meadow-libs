@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace Chibi.Ui.Meadow
+namespace Chibi.Ui.MicroGraphics
 {
     public readonly struct Length
     {
         private readonly int _value;
         public bool IsAuto { get; }
 
-        public static readonly Length Auto = new Length(true);
+        public static readonly Length Auto = new(true);
 
         private Length(bool auto)
         {
@@ -41,7 +41,7 @@ namespace Chibi.Ui.Meadow
 
                 return left;
             }
-            
+
             return new Length(left._value + right._value);
         }
 
@@ -50,10 +50,7 @@ namespace Chibi.Ui.Meadow
             if (left.IsAuto && right.IsAuto)
                 return Auto;
 
-            if (left.IsAuto != right.IsAuto)
-            {
-                return Auto;
-            }
+            if (left.IsAuto != right.IsAuto) return Auto;
 
             return new Length(left._value - right._value);
         }

@@ -1,27 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using Meadow.Foundation.Graphics;
 
-namespace Chibi.Ui.Meadow
+namespace Chibi.Ui.MicroGraphics
 {
     public sealed class RenderingContext
     {
-        private readonly MicroGraphics _graphics;
+        private readonly Meadow.Foundation.Graphics.MicroGraphics _graphics;
 
-        public RenderingContext(MicroGraphics graphics, RenderingArea area)
+        public RenderingContext(Meadow.Foundation.Graphics.MicroGraphics graphics, RenderingArea area)
         {
             Area = area;
             _graphics = graphics;
         }
 
-        public RenderingContext(MicroGraphics graphics)
+        public RenderingContext(Meadow.Foundation.Graphics.MicroGraphics graphics)
             : this(graphics, new RenderingArea(0, 0, Math.Abs(graphics.Width), Math.Abs(graphics.Height)))
         {
         }
 
-        public IFont DefaultFont { get; } = new Font8x8();
-
         public RenderingArea Area { get; }
+
+        public IFont DefaultFont { get; } = new Font8x8();
 
 
         public RenderingContext Create(RenderingArea rect)
@@ -80,7 +79,8 @@ namespace Chibi.Ui.Meadow
 
         public void DrawTriangle(Point p0, Point p1, Point p2, bool colored = true, bool filled = false)
         {
-            _graphics.DrawTriangle(Area.X+p0.X, Area.Y+p0.Y, Area.X+p1.X, Area.Y+p1.Y, Area.X+p2.X, Area.Y+p2.Y, colored, filled);
+            _graphics.DrawTriangle(Area.X + p0.X, Area.Y + p0.Y, Area.X + p1.X, Area.Y + p1.Y, Area.X + p2.X,
+                Area.Y + p2.Y, colored, filled);
         }
 
         public void DrawLine(Point p0, Point p1, bool colored = true)

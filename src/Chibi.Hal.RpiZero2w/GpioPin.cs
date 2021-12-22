@@ -14,12 +14,12 @@ public class GpioPin : IPin
         Name = name;
         Key = key;
         SupportedChannels = supportedChannels;
-        LineNumber = (int)key;
+        GPIO = (int)key;
     }
 
-    public bool IsOpen => _controller.IsPinOpen(LineNumber);
+    public bool IsOpen => _controller.IsPinOpen(GPIO);
 
-    public int LineNumber { get; }
+    public int GPIO { get; }
 
     public IList<IChannelInfo>? SupportedChannels { get; }
 
@@ -35,7 +35,7 @@ public class GpioPin : IPin
     public IDigitalOutputPort AsOutput(bool initialValue = false)
     {
         if (IsOpen)
-            throw new InvalidOperationException($"Pin {LineNumber} is open");
+            throw new InvalidOperationException($"Pin {GPIO} is open");
 
         return new OutputPort(this, initialValue);
     }
@@ -43,7 +43,7 @@ public class GpioPin : IPin
     public IDigitalInputPort AsInput(ResistorMode resistorMode, InterruptMode interruptMode)
     {
         if (IsOpen)
-            throw new InvalidOperationException($"Pin {LineNumber} is open");
+            throw new InvalidOperationException($"Pin {GPIO} is open");
 
         return new InputPort(this, resistorMode, interruptMode);
     }
@@ -55,12 +55,12 @@ public class GpioPin : IPin
         public InputPort(GpioPin pin, ResistorMode resistor, InterruptMode interruptMode)
         {
             GpioPin = pin;
-            Controller.OpenPin(pin.LineNumber, GetPinInputMode(resistor));
+            Controller.OpenPin(pin.GPIO, GetPinInputMode(resistor));
 
             Resistor = resistor;
             InterruptMode = interruptMode;
             Controller.RegisterCallbackForPinValueChangedEvent(
-                GpioPin.LineNumber, 
+                GpioPin.GPIO, 
                 GetPinEventMode(interruptMode),
                 PinValueChanged);
         }
@@ -71,8 +71,8 @@ public class GpioPin : IPin
 
         public void Dispose()
         {
-            if (Controller.IsPinOpen(GpioPin.LineNumber))
-                Controller.ClosePin(GpioPin.LineNumber);
+            if (Controller.IsPinOpen(GpioPin.GPIO))
+                Controller.ClosePin(GpioPin.GPIO);
         }
 
         public InterruptMode InterruptMode { get; }
@@ -92,13 +92,13 @@ public class GpioPin : IPin
             throw new NotImplementedException();
         }
 
-        public bool State => (bool)Controller.Read(GpioPin.LineNumber);
+        public bool State => (bool)Controller.Read(GpioPin.GPIO);
 
         public ResistorMode Resistor
         {
             get
             {
-                return Controller.GetPinMode(GpioPin.LineNumber) switch
+                return Controller.GetPinMode(GpioPin.GPIO) switch
                 {
                     PinMode.Input => ResistorMode.Disabled,
                     PinMode.Output => throw new InvalidOperationException("Input port"),
@@ -107,7 +107,7 @@ public class GpioPin : IPin
                     _ => throw new ArgumentOutOfRangeException()
                 };
             }
-            set => Controller.SetPinMode(GpioPin.LineNumber, GetPinInputMode(value));
+            set => Controller.SetPinMode(GpioPin.GPIO, GetPinInputMode(value));
         }
 
         private PinEventTypes GetPinEventMode(InterruptMode interruptMode)
@@ -155,7 +155,7 @@ public class GpioPin : IPin
         {
             GpioPin = pin;
             _state = initialValue;
-            Controller.OpenPin(pin.LineNumber, PinMode.Output, _state);
+            Controller.OpenPin(pin.GPIO, PinMode.Output, _state);
         }
 
         protected GpioController Controller => GpioPin._controller;
@@ -164,8 +164,8 @@ public class GpioPin : IPin
 
         public void Dispose()
         {
-            if (Controller.IsPinOpen(GpioPin.LineNumber))
-                Controller.ClosePin(GpioPin.LineNumber);
+            if (Controller.IsPinOpen(GpioPin.GPIO))
+                Controller.ClosePin(GpioPin.GPIO);
         }
 
         public IDigitalChannelInfo Channel => throw new NotImplementedException(nameof(Channel));
@@ -180,7 +180,7 @@ public class GpioPin : IPin
             set
             {
                 _state = value;
-                Controller.Write(GpioPin.LineNumber, _state);
+                Controller.Write(GpioPin.GPIO, _state);
             }
         }
     }

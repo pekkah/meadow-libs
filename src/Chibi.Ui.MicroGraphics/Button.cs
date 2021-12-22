@@ -1,7 +1,7 @@
 ﻿using System;
 using Meadow.Foundation.Graphics;
 
-namespace Chibi.Ui.Meadow
+namespace Chibi.Ui.MicroGraphics
 {
     public class Button : UiElement
     {
@@ -9,11 +9,11 @@ namespace Chibi.Ui.Meadow
         private readonly MarginRenderable _paddingRenderable;
 
         public Button(
-            Func<string> text = null,
-            Func<Length> width = null,
-            Func<Length> height = null,
-            Func<Margin> margin = null,
-            Func<Margin> padding = null)
+            Func<string>? text = null,
+            Func<Length>? width = null,
+            Func<Length>? height = null,
+            Func<Margin>? margin = null,
+            Func<Margin>? padding = null)
             : base(width, height)
         {
             Text = text ?? (() => string.Empty);
@@ -22,6 +22,11 @@ namespace Chibi.Ui.Meadow
         }
 
         public Func<string> Text { get; }
+
+        public override void Render(RenderingContext context)
+        {
+            _marginRenderable.Render(context);
+        }
 
         private void RenderWithMargin(RenderingContext context)
         {
@@ -37,11 +42,6 @@ namespace Chibi.Ui.Meadow
                 Text(),
                 new Font4x8(),
                 TextAlignment.Center);
-        }
-
-        public override void Render(RenderingContext context)
-        {
-            _marginRenderable.Render(context);
         }
     }
 }

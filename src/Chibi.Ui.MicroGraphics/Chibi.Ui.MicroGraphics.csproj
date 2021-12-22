@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <RootNamespace>Chibi.Ui.Meadow</RootNamespace>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
+
 	<ItemGroup>
+		<PackageReference Include="Meadow" Version="0.29.1" />
 		<PackageReference Include="Meadow.Foundation.Displays.MicroGraphics" Version="0.9.46" />
 	</ItemGroup>
 </Project>

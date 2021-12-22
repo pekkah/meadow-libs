@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Chibi.Ui.Meadow
+namespace Chibi.Ui.MicroGraphics
 {
     public class MarginRenderable : Renderable
     {

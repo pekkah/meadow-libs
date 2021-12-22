@@ -1,7 +1,7 @@
 ﻿using System;
 using Meadow.Foundation.Graphics;
 
-namespace Chibi.Ui.Meadow
+namespace Chibi.Ui.MicroGraphics
 {
     public class Text : UiElement
     {
@@ -27,9 +27,14 @@ namespace Chibi.Ui.Meadow
 
         public Func<TextAlignment> Alignment { get; set; }
 
+        public Func<IFont>? Font { get; }
+
         public Func<string> Value { get; }
 
-        public Func<IFont>? Font { get; }
+        public override void Render(RenderingContext context)
+        {
+            _marginRenderable.Render(context);
+        }
 
         private void RenderWithMargin(RenderingContext context)
         {
@@ -71,11 +76,6 @@ namespace Chibi.Ui.Meadow
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
-
-        public override void Render(RenderingContext context)
-        {
-            _marginRenderable.Render(context);
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace Chibi.Ui.Meadow
+namespace Chibi.Ui.MicroGraphics
 {
     public interface IHasSize
     {
-        Func<Length> Width { get; }
-
         Func<Length> Height { get; }
+        Func<Length> Width { get; }
     }
 }
