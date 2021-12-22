@@ -36,7 +36,7 @@ namespace Chibi.Ui.Meadow
                 context.Area.Height / 2,
                 Text(),
                 new Font4x8(),
-                GraphicsLibrary.TextAlignment.Center);
+                TextAlignment.Center);
         }
 
         public override void Render(RenderingContext context)

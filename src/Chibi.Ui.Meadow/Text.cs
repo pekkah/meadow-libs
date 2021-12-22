@@ -10,26 +10,26 @@ namespace Chibi.Ui.Meadow
 
         public Text(
             Func<string> value,
-            Func<GraphicsLibrary.TextAlignment> alignment = null,
-            Func<FontBase> font = null,
-            Func<Length> width = null,
-            Func<Length> height = null,
-            Func<Margin> margin = null,
-            Func<Margin> padding = null)
+            Func<TextAlignment>? alignment = null,
+            Func<IFont>? font = null,
+            Func<Length>? width = null,
+            Func<Length>? height = null,
+            Func<Margin>? margin = null,
+            Func<Margin>? padding = null)
             : base(width, height)
         {
             Value = value;
             Font = font;
-            Alignment = alignment ?? (() => GraphicsLibrary.TextAlignment.Left);
+            Alignment = alignment ?? (() => TextAlignment.Left);
             _marginRenderable = new MarginRenderable(margin ?? (() => Margin.Zero), RenderWithMargin);
             _paddingRenderable = new MarginRenderable(padding ?? (() => Margin.Zero), RenderWithPadding);
         }
 
-        public Func<GraphicsLibrary.TextAlignment> Alignment { get; set; }
+        public Func<TextAlignment> Alignment { get; set; }
 
         public Func<string> Value { get; }
 
-        public Func<FontBase> Font { get; }
+        public Func<IFont>? Font { get; }
 
         private void RenderWithMargin(RenderingContext context)
         {
@@ -44,7 +44,7 @@ namespace Chibi.Ui.Meadow
 
             switch (alignment)
             {
-                case GraphicsLibrary.TextAlignment.Left:
+                case TextAlignment.Left:
                     context.DrawText(
                         0,
                         0,
@@ -52,7 +52,7 @@ namespace Chibi.Ui.Meadow
                         font,
                         alignment);
                     break;
-                case GraphicsLibrary.TextAlignment.Center:
+                case TextAlignment.Center:
                     context.DrawText(
                         context.Area.Width / 2,
                         0,
@@ -60,7 +60,7 @@ namespace Chibi.Ui.Meadow
                         font,
                         alignment);
                     break;
-                case GraphicsLibrary.TextAlignment.Right:
+                case TextAlignment.Right:
                     context.DrawText(
                         context.Area.Width,
                         0,

@@ -8,6 +8,6 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Meadow.Foundation.Displays.GraphicsLibrary" Version="0.9.46"/>
+		<PackageReference Include="Meadow.Foundation.Displays.MicroGraphics" Version="0.9.46" />
 	</ItemGroup>
 </Project>

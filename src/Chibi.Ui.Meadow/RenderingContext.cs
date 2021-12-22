@@ -6,20 +6,20 @@ namespace Chibi.Ui.Meadow
 {
     public sealed class RenderingContext
     {
-        private readonly GraphicsLibrary _graphics;
+        private readonly MicroGraphics _graphics;
 
-        public RenderingContext(GraphicsLibrary graphics, RenderingArea area)
+        public RenderingContext(MicroGraphics graphics, RenderingArea area)
         {
             Area = area;
             _graphics = graphics;
         }
 
-        public RenderingContext(GraphicsLibrary graphics)
+        public RenderingContext(MicroGraphics graphics)
             : this(graphics, new RenderingArea(0, 0, Math.Abs(graphics.Width), Math.Abs(graphics.Height)))
         {
         }
 
-        public FontBase DefaultFont { get; } = new Font8x8();
+        public IFont DefaultFont { get; } = new Font8x8();
 
         public RenderingArea Area { get; }
 
@@ -50,14 +50,13 @@ namespace Chibi.Ui.Meadow
             int x,
             int y,
             string text,
-            FontBase font = null,
-            GraphicsLibrary.TextAlignment alignment = GraphicsLibrary.TextAlignment.Left)
+            IFont? font = null,
+            TextAlignment alignment = TextAlignment.Left)
         {
             var actualX = Area.X + x;
             var actualY = Area.Y + y;
 
-            if (font == null)
-                font = DefaultFont;
+            font ??= DefaultFont;
 
             var previousFont = _graphics.CurrentFont;
             _graphics.CurrentFont = font;

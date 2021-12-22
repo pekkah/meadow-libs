@@ -53,7 +53,7 @@ namespace Chibi.Ui.Meadow
                 context.Area.Height - 8 - 4,
                 _text(),
                 new Font4x8(),
-                GraphicsLibrary.TextAlignment.Center);
+                TextAlignment.Center);
         }
     }
 }

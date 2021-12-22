@@ -5,8 +5,8 @@ namespace Chibi.Ui.Meadow
     public abstract class UiElement : Renderable, IHasSize
     {
         protected UiElement(
-            Func<Length> width = null,
-            Func<Length> height = null)
+            Func<Length>? width = null,
+            Func<Length>? height = null)
         {
             Width = width ?? (() => Length.Auto);
             Height = height ?? (() => Length.Auto);
