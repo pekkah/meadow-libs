@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chibi.Ui.Simple"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Chibi UI - Simple" 
+        Height="256" 
+        Width="512">
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Image Name="Display" Width="512" Height="256" />
+        <Image Name="Display" Width="128" Height="64" />
     </StackPanel>
 </Window>

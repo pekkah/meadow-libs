@@ -20,15 +20,8 @@ public class MainMenuScreen
                     children: new[]
                     {
                         new Text(
-                            () => $"{99.9:F1}"
-                        ),
-                        new Text(
                             () => "MENU",
                             () => TextAlignment.Center
-                        ),
-                        new Text(
-                            () => $"{99.9:F1}",
-                            () => TextAlignment.Right
                         )
                     }),
                 new HorizontalLayout(
