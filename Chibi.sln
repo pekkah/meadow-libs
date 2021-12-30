@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Verify.Https.MeadowF7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Hal.RpiZero2w", "src\Chibi.Hal.RpiZero2w\Chibi.Hal.RpiZero2w.csproj", "{C82EF0C0-0788-4DAE-B878-840EB145AD9C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chibi.Ui.Simple", "samples\Chibi.Ui.Simple\Chibi.Ui.Simple.csproj", "{BEADB628-A97A-4860-BAFC-F82045D507EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{C82EF0C0-0788-4DAE-B878-840EB145AD9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C82EF0C0-0788-4DAE-B878-840EB145AD9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C82EF0C0-0788-4DAE-B878-840EB145AD9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEADB628-A97A-4860-BAFC-F82045D507EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEADB628-A97A-4860-BAFC-F82045D507EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEADB628-A97A-4860-BAFC-F82045D507EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEADB628-A97A-4860-BAFC-F82045D507EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
