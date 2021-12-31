@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Verify.Https.MeadowF7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Hal.RpiZero2w", "src\Chibi.Hal.RpiZero2w\Chibi.Hal.RpiZero2w.csproj", "{C82EF0C0-0788-4DAE-B878-840EB145AD9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chibi.Ui.Simple", "samples\Chibi.Ui.Simple\Chibi.Ui.Simple.csproj", "{BEADB628-A97A-4860-BAFC-F82045D507EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Ui.Simple", "samples\Chibi.Ui.Simple\Chibi.Ui.Simple.csproj", "{BEADB628-A97A-4860-BAFC-F82045D507EA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{CCB54CD3-0027-4F29-9ABC-9A103861FDD0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Verify.MeadowF7v2", "Verify.MeadowF7v2", "{694E3FB7-69B0-41B9-A465-03D777359B4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +42,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1C8F5CAF-7F3C-4A7A-A24A-9409162118B7} = {CCB54CD3-0027-4F29-9ABC-9A103861FDD0}
+		{0F3E7A3A-A89B-4805-B1C8-B4CCA3A48D14} = {694E3FB7-69B0-41B9-A465-03D777359B4C}
+		{BEADB628-A97A-4860-BAFC-F82045D507EA} = {CCB54CD3-0027-4F29-9ABC-9A103861FDD0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9094105D-42AB-4240-874E-AFE796F13547}
