@@ -16,7 +16,7 @@ namespace Chibi.Ui.Simple;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private readonly WriteableBitmap _canvas = new(128, 64, 96, 96, PixelFormats.Bgr24, null);
+    private readonly WriteableBitmap _canvas = new(256, 128, 96, 96, PixelFormats.Bgr24, null);
     private readonly WriteableBitmapDisplay _display;
 
     private readonly CancellationTokenSource _exitRenderLoop = new();

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Runtime.InteropServices.ComTypes;
 using Meadow.Foundation.Graphics;
 
 namespace Chibi.Ui.MicroGraphics
 {
-    public class Icon : Renderable
+    public class Icon : UiElement
     {
         public static Icon Play = new(context =>
         {
@@ -21,15 +22,34 @@ namespace Chibi.Ui.MicroGraphics
         });
 
         private readonly Action<RenderingContext> _contents;
+        private readonly MarginRenderable _margin;
+        private readonly MarginRenderable _padding;
 
-        public Icon(Action<RenderingContext> contents)
+        public Icon(
+            Action<RenderingContext> contents,
+            Func<Length>? width = null,
+            Func<Length>? height = null,
+            Func<Margin>? margin = null,
+            Func<Margin>? padding = null) : base(width, height)
         {
             _contents = contents;
+            _margin = new MarginRenderable(margin ?? (() => new Margin(0, 0, 0, 0)), RenderWithMargin);
+            _padding = new MarginRenderable(padding ?? (() => new Margin(2, 2, 2, 2)), RenderWithPadding);
+        }
+
+        private void RenderWithPadding(RenderingContext context)
+        {
+            _contents(context);
+        }
+
+        private void RenderWithMargin(RenderingContext context)
+        {   
+            _padding.Render(context);
         }
 
         public override void Render(RenderingContext context)
         {
-            _contents(context);
+            _margin.Render(context);
         }
     }
 }

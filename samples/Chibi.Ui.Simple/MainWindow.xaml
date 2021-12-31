@@ -9,6 +9,6 @@
         Height="256" 
         Width="512">
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Image Name="Display" Width="128" Height="64" />
+        <Image Name="Display" Width="256" Height="128" />
     </StackPanel>
 </Window>

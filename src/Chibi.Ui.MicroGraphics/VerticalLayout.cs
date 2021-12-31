@@ -47,7 +47,7 @@ namespace Chibi.Ui.MicroGraphics
                 throw new InvalidOperationException(
                     $"Total requested height {totalRequestedHeight} of children is larger than available space {height}");
 
-            var autoHeight = (height - totalRequestedHeight) / (_children.Count - hasSizeCount);
+            var autoHeight = (height - totalRequestedHeight) / Math.Max(1, _children.Count - hasSizeCount);
 
             // do rendering
             var childX = 0;

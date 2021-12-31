@@ -4,6 +4,8 @@
     {
         public static readonly Margin Zero = new();
 
+        public static readonly Margin Two = new(2, 2, 2, 2);
+
         public Margin(int left, int top, int right, int bottom)
         {
             Left = left;

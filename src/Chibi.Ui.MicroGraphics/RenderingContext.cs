@@ -1,5 +1,6 @@
 ﻿using System;
 using Meadow.Foundation.Graphics;
+using Meadow.Foundation.Graphics.Buffers;
 
 namespace Chibi.Ui.MicroGraphics
 {
@@ -86,6 +87,11 @@ namespace Chibi.Ui.MicroGraphics
         public void DrawLine(Point p0, Point p1, bool colored = true)
         {
             _graphics.DrawLine(Area.X + p0.X, Area.Y + p0.Y, Area.X + p1.X, Area.Y + p1.Y, colored);
+        }
+
+        public void DrawBuffer(int x, int y, IDisplayBuffer buffer)
+        {
+            _graphics.DrawBuffer(Area.X + x, Area.Y + y, buffer);
         }
     }
 }
