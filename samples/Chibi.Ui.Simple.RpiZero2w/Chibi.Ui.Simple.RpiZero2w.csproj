@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RSyncEnabled>true</RSyncEnabled>
+    <RsyncDestination>pi@192.168.1.21</RsyncDestination>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="icons\16\play.png" />
+    <None Remove="icons\16\settings.png" />
+    <None Remove="icons\16\test.png" />
+    <None Remove="icons\play.png" />
+    <None Remove="icons\settings.png" />
+    <None Remove="icons\test.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="icons\16\play.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\16\settings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\16\test.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\32\play.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\32\settings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\32\test.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Chibi.Hal.RpiZero2w\Chibi.Hal.RpiZero2w.csproj" />
+    <ProjectReference Include="..\..\src\Chibi.Ui.MicroGraphics\Chibi.Ui.MicroGraphics.csproj" />
+    <ProjectReference Include="..\Chibi.Ui.Simple.Screens\Chibi.Ui.Simple.Screens.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Meadow" Version="0.29.1" />
+    <PackageReference Include="Meadow.Contracts" Version="0.29.0" />
+    <PackageReference Include="Meadow.Foundation.Displays.MicroGraphics" Version="0.9.46" />
+    <PackageReference Include="Meadow.Foundation.Displays.Ssd130x" Version="0.12.45" />
+    <PackageReference Include="Meadow.Units" Version="0.29.0" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+  </ItemGroup>
+</Project>

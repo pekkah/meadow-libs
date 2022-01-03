@@ -9,13 +9,25 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Verify.Https.MeadowF7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Hal.RpiZero2w", "src\Chibi.Hal.RpiZero2w\Chibi.Hal.RpiZero2w.csproj", "{C82EF0C0-0788-4DAE-B878-840EB145AD9C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Ui.Simple", "samples\Chibi.Ui.Simple\Chibi.Ui.Simple.csproj", "{BEADB628-A97A-4860-BAFC-F82045D507EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Ui.Simple.Simulator", "samples\Chibi.Ui.Simple\Chibi.Ui.Simple.Simulator.csproj", "{BEADB628-A97A-4860-BAFC-F82045D507EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{CCB54CD3-0027-4F29-9ABC-9A103861FDD0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Verify.MeadowF7v2", "Verify.MeadowF7v2", "{694E3FB7-69B0-41B9-A465-03D777359B4C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{82272AEB-5BCE-4EF6-9A92-1F84E31C897B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chibi.Ui.Simple.Screens", "samples\Chibi.Ui.Simple.Screens\Chibi.Ui.Simple.Screens.csproj", "{B277E171-E72D-4E1B-B427-65C5AF5D6F06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chibi.Ui.Simple.RpiZero2w", "samples\Chibi.Ui.Simple.RpiZero2w\Chibi.Ui.Simple.RpiZero2w.csproj", "{1A7F17EB-5A8D-4CAE-947C-058629786694}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{63534AFE-4E45-47B3-B44A-63056568E4B2}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.build.targets = Directory.build.targets
+		LICENSE = LICENSE
+		README.md = README.md
+		sync-pi.ps1 = sync-pi.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +53,14 @@ Global
 		{BEADB628-A97A-4860-BAFC-F82045D507EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEADB628-A97A-4860-BAFC-F82045D507EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEADB628-A97A-4860-BAFC-F82045D507EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B277E171-E72D-4E1B-B427-65C5AF5D6F06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B277E171-E72D-4E1B-B427-65C5AF5D6F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B277E171-E72D-4E1B-B427-65C5AF5D6F06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B277E171-E72D-4E1B-B427-65C5AF5D6F06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A7F17EB-5A8D-4CAE-947C-058629786694}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A7F17EB-5A8D-4CAE-947C-058629786694}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A7F17EB-5A8D-4CAE-947C-058629786694}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A7F17EB-5A8D-4CAE-947C-058629786694}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +70,8 @@ Global
 		{0F3E7A3A-A89B-4805-B1C8-B4CCA3A48D14} = {694E3FB7-69B0-41B9-A465-03D777359B4C}
 		{BEADB628-A97A-4860-BAFC-F82045D507EA} = {82272AEB-5BCE-4EF6-9A92-1F84E31C897B}
 		{82272AEB-5BCE-4EF6-9A92-1F84E31C897B} = {CCB54CD3-0027-4F29-9ABC-9A103861FDD0}
+		{B277E171-E72D-4E1B-B427-65C5AF5D6F06} = {82272AEB-5BCE-4EF6-9A92-1F84E31C897B}
+		{1A7F17EB-5A8D-4CAE-947C-058629786694} = {82272AEB-5BCE-4EF6-9A92-1F84E31C897B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9094105D-42AB-4240-874E-AFE796F13547}

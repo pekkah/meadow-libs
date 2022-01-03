@@ -1,13 +1,10 @@
 ﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
 using Chibi.Ui.MicroGraphics;
 using Meadow.Foundation.Graphics;
-using Meadow.Foundation.Graphics.Buffers;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
+using Serilog;
+using Serilog.Core;
 
-namespace Chibi.Ui.Simple;
+namespace Chibi.Ui.Simple.Screens;
 
 public class MainMenuScreen
 {
@@ -17,12 +14,13 @@ public class MainMenuScreen
     private readonly Icon _play;
     private readonly Icon _settings;
     private readonly Icon _test;
+    private static readonly ILogger Logger = Log.ForContext<MainMenuScreen>();
 
     public MainMenuScreen()
     {
-        _play = LoadIcon("icons/play.png");
-        _settings = LoadIcon("icons/settings.png");
-        _test = LoadIcon("icons/test.png");
+        _play = LoadIcon("./icons/play.png");
+        _settings = LoadIcon("./icons/settings.png");
+        _test = LoadIcon("./icons/test.png");
         _renderable = new VerticalLayout(
             new[]
             {
@@ -60,39 +58,19 @@ public class MainMenuScreen
 
     private Icon LoadIcon(string path)
     {
-        try
+        var buffer = ImageLoader.LoadBgr(path);
+
+        return new Icon(context =>
         {
-            using var image = Image.Load(File.ReadAllBytes(path));
-            using var bgr = image.CloneAs<Bgr24>();
-            if (bgr.TryGetSinglePixelSpan(out var bgrSpan))
-            {
-                var span = MemoryMarshal.AsBytes(bgrSpan);
-                var bytes = span.ToArray();
+            // center image
+            var mX = context.Area.Width / 2;
+            var offsetX = Math.Max(0, mX - (buffer.Width / 2));
 
+            var mY = context.Area.Height / 2;
+            var offsetY = Math.Max(0, mY - (buffer.Height / 2));
 
-                var buffer = new BufferRgb888(bgr.Width, bgr.Height, bytes);
-
-                return new Icon(context =>
-                {
-                    // center image
-                    var mX = context.Area.Width / 2;
-                    var offsetX = Math.Max(0, mX - (buffer.Width / 2));
-
-                    var mY = context.Area.Height / 2;
-                    var offsetY = Math.Max(0, mY - (buffer.Height / 2));
-
-                    context.DrawBuffer(offsetX, offsetY, buffer);
-                }, () => Length.Auto, () => Length.Auto);
-            }
-            else
-            {
-                throw new InvalidOperationException();
-            }
-        }
-        catch (Exception x)
-        {
-            throw;
-        }
+            context.DrawBuffer(offsetX, offsetY, buffer);
+        }, () => Length.Auto, () => Length.Auto);
     }
 
     public void Render(RenderingContext context)
@@ -103,5 +81,21 @@ public class MainMenuScreen
     private Margin CurrentButtonMargin(int buttonId)
     {
         return buttonId == _currentButtonId ? Margin.Zero : new Margin(0, 4, 0, 2);
+    }
+
+    public void Left()
+    {
+        if (_currentButtonId == 0)
+            return;
+
+        _currentButtonId--;
+    }
+
+    public void Right()
+    {
+        if (_currentButtonId == 2)
+            return;
+
+        _currentButtonId++;
     }
 }

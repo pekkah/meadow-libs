@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Chibi.Ui.MicroGraphics;
+using Chibi.Ui.Simple.Screens;
 using Meadow.Foundation.Graphics;
 using Color = Meadow.Foundation.Color;
 

@@ -8,19 +8,31 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="icons\play.png" />
-    <None Remove="icons\settings.png" />
-    <None Remove="icons\test.png" />
+    <None Remove="icons\16\play.png" />
+    <None Remove="icons\16\settings.png" />
+    <None Remove="icons\16\test.png" />
+    <None Remove="icons\32\play.png" />
+    <None Remove="icons\32\settings.png" />
+    <None Remove="icons\32\test.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="icons\play.png">
+    <Content Include="icons\16\play.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="icons\settings.png">
+    <Content Include="icons\16\settings.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="icons\test.png">
+    <Content Include="icons\16\test.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\32\play.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\32\settings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\32\test.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -33,6 +45,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Chibi.Ui.MicroGraphics\Chibi.Ui.MicroGraphics.csproj" />
+    <ProjectReference Include="..\Chibi.Ui.Simple.Screens\Chibi.Ui.Simple.Screens.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,6 @@
+<Project>
+  <Target AfterTargets="AfterBuild" Name="SyncPI" Condition=" $(RsyncEnabled) =='true' And $(RsyncDestination) != '' ">
+    <Message Text="Sync: $(MSBuildProjectName)"></Message>
+    <Exec Command="pwsh.exe $(MSBuildProjectDirectory)\..\..\sync-pi.ps1 -Source $(OutDir)\ -DestinationServer $(RsyncDestination) -Destination chibi\$(MSBuildProjectName)\$(Configuration)"  />
+  </Target>
+</Project>
