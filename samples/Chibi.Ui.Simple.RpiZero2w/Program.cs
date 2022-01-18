@@ -25,7 +25,6 @@ using var rightButton = new PushButton(rightButtonInput);
 var exit = false;
 
 logger.Information("Initialize graphics");
-ImageLoader.HalfSize = true;
 var display = new Ssd1306(displayBus)
 {
     IgnoreOutOfBoundsPixels = true
@@ -37,7 +36,7 @@ var graphics = new MicroGraphics(display)
 };
 
 var renderingContext = new RenderingContext(graphics);
-var screen = new MainMenuScreen();
+var screen = new MainMenuScreen(display.Width, display.Height);
 
 leftButton.Clicked += (_, _) =>
 {

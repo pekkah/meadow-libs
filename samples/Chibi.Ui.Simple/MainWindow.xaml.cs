@@ -40,13 +40,12 @@ public partial class MainWindow : Window
             CurrentFont = new Font6x8()
         };
         _renderingContext = new RenderingContext(_graphics);
+        _screen = new MainMenuScreen(_display.Width, _display.Height);
         Task.Factory.StartNew(RenderLoop, _exitRenderLoop, TaskCreationOptions.LongRunning);
     }
 
     private async Task RenderLoop(object? _)
     {
-        await Initialize();
-
         // 30 fps
         long desiredFrametime = 1000 / 30;
         var stopwatch = new Stopwatch();
@@ -61,12 +60,6 @@ public partial class MainWindow : Window
             if (delta > 0)
                 await Task.Delay((int)delta);
         }
-    }
-
-    private Task Initialize()
-    {
-        _screen = new MainMenuScreen();
-        return Task.CompletedTask;
     }
 
     private Task Draw()

@@ -17,17 +17,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Verify.MeadowF7v2", "Verify
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{82272AEB-5BCE-4EF6-9A92-1F84E31C897B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chibi.Ui.Simple.Screens", "samples\Chibi.Ui.Simple.Screens\Chibi.Ui.Simple.Screens.csproj", "{B277E171-E72D-4E1B-B427-65C5AF5D6F06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Ui.Simple.Screens", "samples\Chibi.Ui.Simple.Screens\Chibi.Ui.Simple.Screens.csproj", "{B277E171-E72D-4E1B-B427-65C5AF5D6F06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chibi.Ui.Simple.RpiZero2w", "samples\Chibi.Ui.Simple.RpiZero2w\Chibi.Ui.Simple.RpiZero2w.csproj", "{1A7F17EB-5A8D-4CAE-947C-058629786694}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Ui.Simple.RpiZero2w", "samples\Chibi.Ui.Simple.RpiZero2w\Chibi.Ui.Simple.RpiZero2w.csproj", "{1A7F17EB-5A8D-4CAE-947C-058629786694}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{63534AFE-4E45-47B3-B44A-63056568E4B2}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		Directory.build.targets = Directory.build.targets
 		LICENSE = LICENSE
 		README.md = README.md
 		sync-pi.ps1 = sync-pi.ps1
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Ui.SourceGenerators", "src\Chibi.Ui.SourceGenerators\Chibi.Ui.SourceGenerators.csproj", "{D8660ACB-6E29-4DB6-BE37-12D0E66634BC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Ui.SourceGenerators.Tests", "test\Chibi.Ui.SourceGenerators.Tests\Chibi.Ui.SourceGenerators.Tests.csproj", "{3F2CA1C8-186D-4100-B5E3-EE35C7E1CAA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +66,14 @@ Global
 		{1A7F17EB-5A8D-4CAE-947C-058629786694}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A7F17EB-5A8D-4CAE-947C-058629786694}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A7F17EB-5A8D-4CAE-947C-058629786694}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8660ACB-6E29-4DB6-BE37-12D0E66634BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8660ACB-6E29-4DB6-BE37-12D0E66634BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8660ACB-6E29-4DB6-BE37-12D0E66634BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8660ACB-6E29-4DB6-BE37-12D0E66634BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F2CA1C8-186D-4100-B5E3-EE35C7E1CAA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F2CA1C8-186D-4100-B5E3-EE35C7E1CAA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F2CA1C8-186D-4100-B5E3-EE35C7E1CAA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F2CA1C8-186D-4100-B5E3-EE35C7E1CAA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +85,8 @@ Global
 		{82272AEB-5BCE-4EF6-9A92-1F84E31C897B} = {CCB54CD3-0027-4F29-9ABC-9A103861FDD0}
 		{B277E171-E72D-4E1B-B427-65C5AF5D6F06} = {82272AEB-5BCE-4EF6-9A92-1F84E31C897B}
 		{1A7F17EB-5A8D-4CAE-947C-058629786694} = {82272AEB-5BCE-4EF6-9A92-1F84E31C897B}
+		{D8660ACB-6E29-4DB6-BE37-12D0E66634BC} = {CCB54CD3-0027-4F29-9ABC-9A103861FDD0}
+		{3F2CA1C8-186D-4100-B5E3-EE35C7E1CAA6} = {CCB54CD3-0027-4F29-9ABC-9A103861FDD0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9094105D-42AB-4240-874E-AFE796F13547}

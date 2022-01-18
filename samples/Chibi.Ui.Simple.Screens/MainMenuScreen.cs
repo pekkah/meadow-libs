@@ -1,101 +1,113 @@
 ﻿using System;
 using Chibi.Ui.MicroGraphics;
 using Meadow.Foundation.Graphics;
+using Meadow.Foundation.Graphics.Buffers;
 using Serilog;
-using Serilog.Core;
 
-namespace Chibi.Ui.Simple.Screens;
-
-public class MainMenuScreen
+namespace Chibi.Ui.Simple.Screens
 {
-    private readonly Renderable _renderable;
 
-    private int _currentButtonId = 0;
-    private readonly Icon _play;
-    private readonly Icon _settings;
-    private readonly Icon _test;
-    private static readonly ILogger Logger = Log.ForContext<MainMenuScreen>();
-
-    public MainMenuScreen()
+    public class MainMenuScreen
     {
-        _play = LoadIcon("./icons/play.png");
-        _settings = LoadIcon("./icons/settings.png");
-        _test = LoadIcon("./icons/test.png");
-        _renderable = new VerticalLayout(
-            new[]
-            {
-                new HorizontalLayout(
-                    height: () => 16,
-                    margin: () => new Margin(2, 2, 2, 2),
-                    children: new[]
-                    {
-                        new Text(
-                            () => "MENU",
-                            () => TextAlignment.Center
-                        )
-                    }),
-                new HorizontalLayout(
-                    new[]
-                    {
-                        new IconButton(
-                            icon: ()=> _play,
-                            padding: () => CurrentButtonMargin(0),
-                            text: () => "Button 1"
-                        ),
-                        new IconButton(
-                            icon: ()=> _test,
-                            padding: () => CurrentButtonMargin(1),
-                            text: () => "Button 2"
-                        ),
-                        new IconButton(
-                            icon: ()=> _settings,
-                            padding: () => CurrentButtonMargin(2),
-                            text: () => "Button 3"
-                        )
-                    })
-            });
-    }
+        private readonly Renderable _renderable;
 
-    private Icon LoadIcon(string path)
-    {
-        var buffer = ImageLoader.LoadBgr(path);
+        private int _currentButtonId = 0;
+        private readonly Icon _play;
+        private readonly Icon _settings;
+        private readonly Icon _test;
+        private static readonly ILogger Logger = Log.ForContext<MainMenuScreen>();
+        private Icons _icons = new();
 
-        return new Icon(context =>
+        public MainMenuScreen(int width, int height)
         {
-            // center image
-            var mX = context.Area.Width / 2;
-            var offsetX = Math.Max(0, mX - (buffer.Width / 2));
+            _play = LoadIcon("play", width, height);
+            _settings = LoadIcon("settings", width, height);
+            _test = LoadIcon("test", width, height);
+            _renderable = new VerticalLayout(
+                new[]
+                {
+                    new HorizontalLayout(
+                        height: () => 16,
+                        margin: () => new Margin(2, 2, 2, 2),
+                        children: new[]
+                        {
+                            new Text(
+                                () => "MENU",
+                                () => TextAlignment.Center
+                            )
+                        }),
+                    new HorizontalLayout(
+                        new[]
+                        {
+                            new IconButton(
+                                icon: () => _play,
+                                padding: () => CurrentButtonMargin(0),
+                                text: () => "Button 1"
+                            ),
+                            new IconButton(
+                                icon: () => _test,
+                                padding: () => CurrentButtonMargin(1),
+                                text: () => "Button 2"
+                            ),
+                            new IconButton(
+                                icon: () => _settings,
+                                padding: () => CurrentButtonMargin(2),
+                                text: () => "Button 3"
+                            )
+                        })
+                });
+        }
 
-            var mY = context.Area.Height / 2;
-            var offsetY = Math.Max(0, mY - (buffer.Height / 2));
+        private Icon LoadIcon(string name, int screenWidth, int screenHeight)
+        {
+            IDisplayBuffer buffer = (name, screenWidth) switch
+            {
+                ("play", <= 128) => _icons.Play16x16,
+                ("settings", <= 128) => _icons.Settings16x16,
+                ("test", <= 128) => _icons.Test16x16,
+                ("play", _) => _icons.Play32x32,
+                ("settings", _) => _icons.Settings32x32,
+                ("test", _) => _icons.Test32x32,
+                _ => throw new ArgumentOutOfRangeException(nameof(name))
+            };
 
-            context.DrawBuffer(offsetX, offsetY, buffer);
-        }, () => Length.Auto, () => Length.Auto);
-    }
+            return new Icon(context =>
+            {
+                // center image
+                var mX = context.Area.Width / 2;
+                var offsetX = Math.Max(0, mX - (buffer.Width / 2));
 
-    public void Render(RenderingContext context)
-    {
-        _renderable.Render(context);
-    }
+                var mY = context.Area.Height / 2;
+                var offsetY = Math.Max(0, mY - (buffer.Height / 2));
 
-    private Margin CurrentButtonMargin(int buttonId)
-    {
-        return buttonId == _currentButtonId ? Margin.Zero : new Margin(0, 4, 0, 2);
-    }
+                context.DrawBuffer(offsetX, offsetY, buffer);
+            }, () => Length.Auto, () => Length.Auto);
+        }
 
-    public void Left()
-    {
-        if (_currentButtonId == 0)
-            return;
+        public void Render(RenderingContext context)
+        {
+            _renderable.Render(context);
+        }
 
-        _currentButtonId--;
-    }
+        private Margin CurrentButtonMargin(int buttonId)
+        {
+            return buttonId == _currentButtonId ? Margin.Zero : new Margin(0, 4, 0, 2);
+        }
 
-    public void Right()
-    {
-        if (_currentButtonId == 2)
-            return;
+        public void Left()
+        {
+            if (_currentButtonId == 0)
+                return;
 
-        _currentButtonId++;
+            _currentButtonId--;
+        }
+
+        public void Right()
+        {
+            if (_currentButtonId == 2)
+                return;
+
+            _currentButtonId++;
+        }
     }
 }

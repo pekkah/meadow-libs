@@ -364,3 +364,5 @@ FodyWeavers.xsd
 **/appSettings.Local.json
 **/appSettings.Local.yml
 **/wifi.config.yaml
+
+**/*.received.*
