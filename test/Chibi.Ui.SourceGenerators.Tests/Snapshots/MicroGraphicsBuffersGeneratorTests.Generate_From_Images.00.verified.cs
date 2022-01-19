@@ -1,8 +1,8 @@
-﻿//HintName: ImageAtlasAttribute.cs
-namespace Chibi.Ui.Micrographics
+﻿//HintName: MicroGraphicsBuffersAttribute.cs
+namespace Chibi.Ui.MicroGraphics
 {
     [System.AttributeUsage(System.AttributeTargets.Class)]
-    public class ImageAtlasAttribute : System.Attribute
+    public class MicroGraphicsBuffersAttribute : System.Attribute
     {
         public string RelativeSourcePath { get; set; }
 

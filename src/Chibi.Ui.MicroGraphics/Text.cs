@@ -45,8 +45,7 @@ namespace Chibi.Ui.MicroGraphics
         {
             var font = Font != null ? Font() : context.DefaultFont;
             var alignment = Alignment();
-
-
+            
             switch (alignment)
             {
                 case TextAlignment.Left:

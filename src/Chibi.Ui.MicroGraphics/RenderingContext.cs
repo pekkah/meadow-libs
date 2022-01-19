@@ -21,12 +21,14 @@ namespace Chibi.Ui.MicroGraphics
 
         public RenderingArea Area { get; }
 
-        public IFont DefaultFont { get; } = new Font8x8();
-
+        public IFont DefaultFont { get; set; } = new Font8x8();
 
         public RenderingContext Create(RenderingArea rect)
         {
-            return new RenderingContext(_graphics, rect);
+            return new RenderingContext(_graphics, rect)
+            {
+                DefaultFont = DefaultFont
+            };
         }
 
         public RenderingContext Create()

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Chibi.Ui.MicroGraphics;
@@ -17,7 +18,7 @@ namespace Chibi.Ui.Simple;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private readonly WriteableBitmap _canvas = new(256, 128, 96, 96, PixelFormats.Bgr24, null);
+    private readonly WriteableBitmap _canvas = new(512, 256, 120, 120, PixelFormats.Bgr24, null);
     private readonly WriteableBitmapDisplay _display;
 
     private readonly CancellationTokenSource _exitRenderLoop = new();
@@ -39,7 +40,10 @@ public partial class MainWindow : Window
             PenColor = Color.White,
             CurrentFont = new Font6x8()
         };
-        _renderingContext = new RenderingContext(_graphics);
+        _renderingContext = new RenderingContext(_graphics)
+        {
+            DefaultFont = new Font12x20()
+        };
         _screen = new MainMenuScreen(_display.Width, _display.Height);
         Task.Factory.StartNew(RenderLoop, _exitRenderLoop, TaskCreationOptions.LongRunning);
     }
@@ -71,5 +75,18 @@ public partial class MainWindow : Window
             _graphics.Show();
         });
         return Task.CompletedTask;
+    }
+
+    private void Display_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case Key.Left:
+                _screen?.Left();
+                break;
+            case Key.Right:
+                _screen?.Right();
+                break;
+        }
     }
 }

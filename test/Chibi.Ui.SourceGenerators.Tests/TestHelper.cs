@@ -37,8 +37,6 @@ public static class TestHelper<TGenerator> where TGenerator: IIncrementalGenerat
         return Verifier
             // ReSharper disable once ExplicitCallerInfoArgument
             .Verify(driver, sourceFile: sourceFile)
-            .DisableDiff()
-            .AutoVerify(false)
             .UseDirectory("Snapshots");
     }
 }

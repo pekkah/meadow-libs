@@ -18,7 +18,7 @@ using SixLabors.ImageSharp.PixelFormats;
 namespace Chibi.Ui.SourceGenerators
 {
     [Generator(LanguageNames.CSharp)]
-    public class ImageAtlasGenerator : IIncrementalGenerator
+    public class MicroGraphicsBuffersGenerator : IIncrementalGenerator
     {
         public static string AttributeSource =
             $@"namespace {Namespace}
@@ -32,8 +32,8 @@ namespace Chibi.Ui.SourceGenerators
     }}
 }}";
 
-        private const string Namespace = "Chibi.Ui.Micrographics";
-        private const string Attribute = "ImageAtlasAttribute";
+        private const string Namespace = "Chibi.Ui.MicroGraphics";
+        private const string Attribute = "MicroGraphicsBuffersAttribute";
         private static readonly string FullAttributeName = $"{Namespace}.{Attribute}";
 
 
@@ -47,7 +47,7 @@ namespace Chibi.Ui.SourceGenerators
 #endif
 
             context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
-                "ImageAtlasAttribute.cs",
+                "MicroGraphicsBuffersAttribute.cs",
                 SourceText.From(AttributeSource, Encoding.UTF8)));
 
             IncrementalValuesProvider<ClassDeclarationSyntax> classDeclarationsWithAttributes = context.SyntaxProvider
@@ -100,7 +100,6 @@ namespace Chibi.Ui.SourceGenerators
                 return;
 
             var classDeclarationSyntaxes = classes.Distinct();
-
             var atlasDefinitions = GetTypesToGenerate(compilation, classDeclarationSyntaxes, context);
 
             StringBuilder sb = default;
@@ -135,40 +134,40 @@ namespace Chibi.Ui.SourceGenerators
             }
         }
 
-        private static string GenerateAtlas(AtlasDefinition atlasDefinition, SourceProductionContext context)
+        private static string GenerateAtlas(BuffersClassDefinition buffersClassDefinition, SourceProductionContext context)
         {
             var builder = new IndentedStringBuilder();
 
-            builder.AppendLine($"namespace {atlasDefinition.NameSpace}");
+            builder.AppendLine($"namespace {buffersClassDefinition.Namespace}");
             builder.AppendLine("{");
             using (var classScope = builder.Indent())
             {
                 builder.AppendLine("using Meadow.Foundation.Graphics.Buffers;");
                 builder.AppendLine();
 
-                builder.AppendLine($"public partial class {atlasDefinition.Name}");
+                builder.AppendLine($"public partial class {buffersClassDefinition.Name}");
                 builder.AppendLine("{");
                 using (var membersScope = builder.Indent())
                 {
                     // combine images
                     var directory = Path.GetFullPath(Path.Combine(
-                        Path.GetDirectoryName(atlasDefinition.FilePath) ?? string.Empty,
-                        atlasDefinition.RelativeSourcePath));
+                        Path.GetDirectoryName(buffersClassDefinition.FilePath) ?? string.Empty,
+                        buffersClassDefinition.RelativeSourcePath));
 
-                    atlasDefinition.Parts = ReadParts(directory);
+                    buffersClassDefinition.BufferSources = ReadParts(directory);
 
-                    foreach (var part in atlasDefinition.Parts)
+                    foreach (var part in buffersClassDefinition.BufferSources)
                     {
                         using var memberScope = builder.Indent();
 
                         var name = $"{Path.GetFileNameWithoutExtension(part.FileName)}{part.Width}x{part.Height}";
                         name = $"{char.ToUpper(name[0])}{name.Substring(1)}";
                         builder.AppendLine(
-                            $"public {atlasDefinition.BufferType} {name} {{ get; }} = new {atlasDefinition.BufferType}({part.Width}, {part.Height}, new byte[]");
+                            $"public {buffersClassDefinition.BufferType} {name} {{ get; }} = new {buffersClassDefinition.BufferType}({part.Width}, {part.Height}, new byte[]");
                         builder.AppendLine("{");
 
                         using var sourceImage = Image.Load<Rgba32>(part.FileName);
-                        if (TryGetBytes(sourceImage, atlasDefinition.BufferType, context, out var buffer))
+                        if (TryGetBytes(sourceImage, buffersClassDefinition.BufferType, context, out var buffer))
                         {
                             using var bytesScope = builder.Indent();
                             var bytes = buffer!.Buffer;
@@ -245,39 +244,35 @@ namespace Chibi.Ui.SourceGenerators
             return targetBuffer;
         }
 
-        private static IEnumerable<AtlasPartDefinition> ReadParts(string directory)
+        private static IEnumerable<BufferSourceDefinition> ReadParts(string directory)
         {
-            var pngs = Directory.GetFiles(directory, "*.png", SearchOption.AllDirectories)
-                .Where(filename => !new[] { "atlas.png" }.Contains(Path.GetFileName(filename)))
-                .ToList();
+            var pngs = Directory.GetFiles(directory, "*.png", SearchOption.AllDirectories);
 
-            if (pngs.Count == 0)
-                return Enumerable.Empty<AtlasPartDefinition>();
+            if (pngs.Length == 0)
+                return Enumerable.Empty<BufferSourceDefinition>();
 
-            var parts = new List<AtlasPartDefinition>();
+            var parts = new List<BufferSourceDefinition>();
             foreach (var png in pngs)
             {
                 var part = Image.Identify(Configuration.Default, png, out _);
-                parts.Add(new AtlasPartDefinition
+                parts.Add(new BufferSourceDefinition
                 {
                     FileName = png,
                     Height = part.Height,
-                    Width = part.Width,
-                    X = 0,
-                    Y = 0
+                    Width = part.Width
                 });
             }
 
             return parts;
         }
 
-        private static IEnumerable<AtlasDefinition> GetTypesToGenerate(
+        private static IEnumerable<BuffersClassDefinition> GetTypesToGenerate(
             Compilation compilation,
             IEnumerable<ClassDeclarationSyntax> classes,
             SourceProductionContext context)
         {
-            var atlasAttribute = compilation.GetTypeByMetadataName(FullAttributeName);
-            if (atlasAttribute == null) yield break;
+            var buffersAttribute = compilation.GetTypeByMetadataName(FullAttributeName);
+            if (buffersAttribute == null) yield break;
 
             foreach (var classDeclaration in classes)
             {
@@ -300,7 +295,7 @@ namespace Chibi.Ui.SourceGenerators
                 string? targetBufferType = default;
                 foreach (var attributeData in namedTypeSymbol.GetAttributes())
                 {
-                    if (!atlasAttribute.Equals(attributeData.AttributeClass, SymbolEqualityComparer.Default)) continue;
+                    if (!buffersAttribute.Equals(attributeData.AttributeClass, SymbolEqualityComparer.Default)) continue;
 
                     foreach (var namedArgument in attributeData.NamedArguments)
                     {
@@ -321,17 +316,17 @@ namespace Chibi.Ui.SourceGenerators
                 if (relativeSourcePath is not { Length: > 0 })
                 {
                     context.ReportDiagnostic(CreateDiagnostic(null, "CHIBI0001",
-                        "ImageAtlasAttribute usage missing RelativeSourcePath", DiagnosticSeverity.Error));
+                        "MicroGraphicsBuffersAttribute usage missing RelativeSourcePath", DiagnosticSeverity.Error));
                     yield break;
                 }
 
                 var fullyQualifiedName = namedTypeSymbol.ToString();
 
-                yield return new AtlasDefinition
+                yield return new BuffersClassDefinition
                 {
                     Name = name,
                     FullyQualifiedName = fullyQualifiedName,
-                    NameSpace = nameSpace,
+                    Namespace = nameSpace,
                     RelativeSourcePath = relativeSourcePath,
                     FilePath = namedTypeSymbol.DeclaringSyntaxReferences.First().SyntaxTree.FilePath,
                     BufferType = targetBufferType ?? string.Empty
@@ -346,7 +341,7 @@ namespace Chibi.Ui.SourceGenerators
                 id,
                 title,
                 title,
-                "tests",
+                "Build",
                 severity,
                 true,
                 description: title);

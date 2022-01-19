@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chibi.Ui.Simple"
         mc:Ignorable="d"
-        Title="Chibi UI - Simple" 
-        Height="256" 
-        Width="512">
+        Title="Chibi UI - Simple"
+        Width="550"
+        Height="330"
+        KeyUp="Display_KeyUp">
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Image Name="Display" Width="256" Height="128" />
+        <Image Name="Display" Width="512" Height="256" UseLayoutRounding="false" SnapsToDevicePixels="true" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Stretch="None" />
     </StackPanel>
 </Window>

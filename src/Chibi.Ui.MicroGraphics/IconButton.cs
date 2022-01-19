@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Meadow.Foundation.Graphics;
-using Meadow.Foundation.Graphics.Buffers;
 
 namespace Chibi.Ui.MicroGraphics
 {
@@ -30,7 +29,7 @@ namespace Chibi.Ui.MicroGraphics
         private IEnumerable<Renderable> Children()
         {
             yield return _icon();
-            yield return new Text(_text, () => TextAlignment.Center, () => new Font4x8(), height: ()=> 16);
+            yield return new Text(_text, () => TextAlignment.Center, height: ()=> 22);
         }
 
         public override void Render(RenderingContext context)
