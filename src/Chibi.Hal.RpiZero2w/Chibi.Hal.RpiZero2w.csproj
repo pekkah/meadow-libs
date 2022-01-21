@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Description>HAL layer for Raspberry Pi Zero 2 W based on the Meadow.Foundation and System.Devices.Gpio</Description>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Device.Gpio" Version="1.5.0" />

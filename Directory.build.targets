@@ -1,4 +1,12 @@
 <Project>
+  <PropertyGroup>
+    <Copyright>Pekka Heikura</Copyright>
+    <PackageProjectUrl>https://github.com/pekkah/meadow-libs</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/pekkah/meadow-libs</RepositoryUrl>
+    <PackageTags>Raspberry;HAL;Gpio;I2C,SPI,Chibi</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
   <Target AfterTargets="AfterBuild" Name="SyncPI" Condition=" $(RsyncEnabled) =='true' And $(RsyncDestination) != '' ">
     <Message Text="Sync: $(MSBuildProjectName)"></Message>
     <Exec Command="pwsh.exe $(MSBuildProjectDirectory)\..\..\sync-pi.ps1 -Source $(OutDir)\ -DestinationServer $(RsyncDestination) -Destination chibi\$(MSBuildProjectName)\$(Configuration)"  />
