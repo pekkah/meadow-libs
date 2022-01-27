@@ -6,6 +6,7 @@
 		<AssemblyName>App</AssemblyName>
 		<LangVersion>9</LangVersion>
 		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 	<ItemGroup>
     <PackageReference Include="Meadow" Version="0.29.1" />

@@ -130,7 +130,7 @@ namespace Chibi.Ui.SourceGenerators
 
             if (!found)
             {
-                context.ReportDiagnostic(CreateDiagnostic(null, $"CHIBI0010", $"No {Attribute} found on partial classes", DiagnosticSeverity.Error));
+                context.ReportDiagnostic(CreateDiagnostic(null, $"CHIBI0010", $"No {Attribute} found on partial classes", DiagnosticSeverity.Info));
             }
         }
 

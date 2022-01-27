@@ -24,10 +24,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{63534AFE-4E45-47B3-B44A-63056568E4B2}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		.github\dependabot.yml = .github\dependabot.yml
+		Directory.Build.props = Directory.Build.props
 		Directory.build.targets = Directory.build.targets
 		LICENSE = LICENSE
 		README.md = README.md
 		sync-pi.ps1 = sync-pi.ps1
+		version.json = version.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Ui.SourceGenerators", "src\Chibi.Ui.SourceGenerators\Chibi.Ui.SourceGenerators.csproj", "{D8660ACB-6E29-4DB6-BE37-12D0E66634BC}"

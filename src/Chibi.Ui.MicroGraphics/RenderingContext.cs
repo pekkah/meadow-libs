@@ -6,15 +6,15 @@ namespace Chibi.Ui.MicroGraphics
 {
     public sealed class RenderingContext
     {
-        private readonly Meadow.Foundation.Graphics.MicroGraphics _graphics;
+        private readonly global::Meadow.Foundation.Graphics.MicroGraphics _graphics;
 
-        public RenderingContext(Meadow.Foundation.Graphics.MicroGraphics graphics, RenderingArea area)
+        public RenderingContext(global::Meadow.Foundation.Graphics.MicroGraphics graphics, RenderingArea area)
         {
             Area = area;
             _graphics = graphics;
         }
 
-        public RenderingContext(Meadow.Foundation.Graphics.MicroGraphics graphics)
+        public RenderingContext(global::Meadow.Foundation.Graphics.MicroGraphics graphics)
             : this(graphics, new RenderingArea(0, 0, Math.Abs(graphics.Width), Math.Abs(graphics.Height)))
         {
         }

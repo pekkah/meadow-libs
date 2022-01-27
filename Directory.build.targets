@@ -1,10 +1,12 @@
 <Project>
   <PropertyGroup>
-    <Copyright>Pekka Heikura</Copyright>
+    <Authors>Pekka Heikura</Authors>
+    <Copyright>© 2022 Pekka Heikura</Copyright>
     <PackageProjectUrl>https://github.com/pekkah/meadow-libs</PackageProjectUrl>
     <RepositoryUrl>https://github.com/pekkah/meadow-libs</RepositoryUrl>
     <PackageTags>Raspberry;HAL;Gpio;I2C,SPI,Chibi</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>Embedded libs</Description>
   </PropertyGroup>
 
   <Target AfterTargets="AfterBuild" Name="SyncPI" Condition=" $(RsyncEnabled) =='true' And $(RsyncDestination) != '' ">

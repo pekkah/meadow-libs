@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Meadow.Foundation;
+using Meadow.Foundation.Graphics;
+using Meadow.Foundation.Graphics.Buffers;
+using System;
 
-namespace Meadow.Foundation.Graphics.Buffers
+namespace Chibi.Ui.MicroGraphics.Meadow.Foundation.Graphics.Buffers
 {
     public class BufferRgb8888 : BufferBase
     {
@@ -15,14 +18,14 @@ namespace Meadow.Foundation.Graphics.Buffers
         public int GetPixelInt(int x, int y)
         {
             //get current color
-            var index = ((y * Width) + x) * 4;
+            var index = (y * Width + x) * 4;
 
-            return (int)(Buffer[index] << 24 | Buffer[++index] << 16 | Buffer[++index] << 8 | Buffer[++index]);
+            return Buffer[index] << 24 | Buffer[++index] << 16 | Buffer[++index] << 8 | Buffer[++index];
         }
 
         public override Color GetPixel(int x, int y)
         {
-            var index = ((y * Width) + x) * 4;
+            var index = (y * Width + x) * 4;
 
             //split into R,G,B & invert
             byte r = Buffer[index];
@@ -35,7 +38,7 @@ namespace Meadow.Foundation.Graphics.Buffers
 
         public override void SetPixel(int x, int y, Color color)
         {
-            var index = ((y * Width) + x) * 4;
+            var index = (y * Width + x) * 4;
 
             Buffer[index] = color.R;
             Buffer[index + 1] = color.G;
