@@ -9,6 +9,8 @@ public class I2CBus : II2cBus
     private const string DefaultDevicePath = "/dev/i2c";
     private static readonly object InitializationLock = new();
 
+
+
     public unsafe I2CBus(int busId)
     {
         var deviceFileName = $"{DefaultDevicePath}-{busId}";

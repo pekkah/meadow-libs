@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Ui.SourceGenerators",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chibi.Ui.SourceGenerators.Tests", "test\Chibi.Ui.SourceGenerators.Tests\Chibi.Ui.SourceGenerators.Tests.csproj", "{3F2CA1C8-186D-4100-B5E3-EE35C7E1CAA6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chibi.Hal.Meadow", "src\Chibi.Hal.Meadow\Chibi.Hal.Meadow.csproj", "{B6EA4C90-9225-4B3A-B939-5DDCD057608D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{3F2CA1C8-186D-4100-B5E3-EE35C7E1CAA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F2CA1C8-186D-4100-B5E3-EE35C7E1CAA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F2CA1C8-186D-4100-B5E3-EE35C7E1CAA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6EA4C90-9225-4B3A-B939-5DDCD057608D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6EA4C90-9225-4B3A-B939-5DDCD057608D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6EA4C90-9225-4B3A-B939-5DDCD057608D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6EA4C90-9225-4B3A-B939-5DDCD057608D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
