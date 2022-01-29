@@ -1,4 +1,4 @@
-name: .NET
+name: Build and package
 
 on:
   push:
@@ -17,15 +17,25 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+    - name: Update submodules
+      run: |
+        git submodule update --init --recursive
+        
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
+        
+    - name: Build
+      run: |
+        dotnet restore
+        dotnet build -c Release
+        
     - name: Test
       run: |
-        dotnet test -c Release
+        dotnet test -c Release --no-build --no-restore
+        
     - name: Build packages
-      # shell: pwsh
       # Pack as private build for now
       run: |
         dotnet pack -c Release -o ./packages /p:PublicRelease=false
@@ -33,7 +43,7 @@ jobs:
     - name: Integration test
       run: |
         dotnet restore ./integration-test/Chibi.Ui.SourceGenerators.NugetTests/ -s ./packages
-        dotnet test .\integration-test\Chibi.Ui.SourceGenerators.NugetTests\ --no-restore
+        dotnet test ./integration-test\Chibi.Ui.SourceGenerators.NugetTests/ --no-restore
     
     - name: Publish packages
       uses: actions/upload-artifact@v2
