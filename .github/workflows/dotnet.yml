@@ -23,10 +23,11 @@ jobs:
         dotnet-version: 6.0.x
     - name: Build
       run: |
+        dotnet restore -c Release
         dotnet build -c Release
     - name: Test
       run: |
-        dotnet test -c Release
+        dotnet test -c Release --no-build --no-restore
     - name: Build packages
       # shell: pwsh
       # Pack as private build for now
