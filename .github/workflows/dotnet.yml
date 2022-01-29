@@ -19,7 +19,7 @@ jobs:
         fetch-depth: 0
     - name: Update submodules
       run: |
-        git submodule update --init --recursiv
+        git submodule update --init --recursive
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
