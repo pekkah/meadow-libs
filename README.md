@@ -5,7 +5,7 @@
 
 These are small apps used to verify various functions of the Meadow
 
-#### [Wifi](src/Verify.Wifi)
+#### [Wifi](src/Chibi.Verify.Https.MeadowF7v2)
 
 This will do get requests to postman echo in a loop. Use `meadow listen` to read the output.
 
