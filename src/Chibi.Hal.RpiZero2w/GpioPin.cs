@@ -1,10 +1,11 @@
 ﻿using System.Device.Gpio;
-using Meadow;
+using System.Diagnostics;
 using Meadow.Hardware;
 
 namespace Chibi.Hal.RpiZero2w;
 
-public class GpioPin : IPin
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public partial class GpioPin : IPin
 {
     private readonly GpioController _controller;
 
@@ -17,9 +18,11 @@ public class GpioPin : IPin
         GPIO = (int)key;
     }
 
+    public int GPIO { get; }
+
     public bool IsOpen => _controller.IsPinOpen(GPIO);
 
-    public int GPIO { get; }
+    private string DebuggerDisplay => $"Gpio: {GPIO}, IsOpen: {IsOpen}";
 
     public IList<IChannelInfo>? SupportedChannels { get; }
 
@@ -32,7 +35,7 @@ public class GpioPin : IPin
         return Name;
     }
 
-    public IDigitalOutputPort AsOutput(bool initialValue = false)
+    public IDigitalOutputPort ToOutput(bool initialValue = false)
     {
         if (IsOpen)
             throw new InvalidOperationException($"Pin {GPIO} is open");
@@ -40,148 +43,14 @@ public class GpioPin : IPin
         return new OutputPort(this, initialValue);
     }
 
-    public IDigitalInputPort AsInput(ResistorMode resistorMode, InterruptMode interruptMode)
+    public IDigitalInputPort ToInput(ResistorMode resistorMode, InterruptMode interruptMode, long debounceMs = 0)
     {
         if (IsOpen)
             throw new InvalidOperationException($"Pin {GPIO} is open");
 
-        return new InputPort(this, resistorMode, interruptMode);
-    }
-
-    public class InputPort : IDigitalInputPort
-    {
-        private DateTime LastEventTime { get; set; } = DateTime.MinValue;
-
-        public InputPort(GpioPin pin, ResistorMode resistor, InterruptMode interruptMode)
+        return new InputPort(this, resistorMode, interruptMode)
         {
-            GpioPin = pin;
-            Controller.OpenPin(pin.GPIO, GetPinInputMode(resistor));
-
-            Resistor = resistor;
-            InterruptMode = interruptMode;
-            Controller.RegisterCallbackForPinValueChangedEvent(
-                GpioPin.GPIO, 
-                GetPinEventMode(interruptMode),
-                PinValueChanged);
-        }
-
-        protected GpioController Controller => GpioPin._controller;
-
-        protected GpioPin GpioPin { get; }
-
-        public void Dispose()
-        {
-            if (Controller.IsPinOpen(GpioPin.GPIO))
-                Controller.ClosePin(GpioPin.GPIO);
-        }
-
-        public InterruptMode InterruptMode { get; }
-
-        public double DebounceDuration { get; set; }
-
-        public double GlitchDuration { get; set; }
-
-        public event EventHandler<DigitalPortResult>? Changed;
-
-        public IDigitalChannelInfo Channel => throw new NotImplementedException(nameof(Channel));
-
-        public IPin Pin => GpioPin;
-
-        public IDisposable Subscribe(IObserver<IChangeResult<DigitalState>> observer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool State => (bool)Controller.Read(GpioPin.GPIO);
-
-        public ResistorMode Resistor
-        {
-            get
-            {
-                return Controller.GetPinMode(GpioPin.GPIO) switch
-                {
-                    PinMode.Input => ResistorMode.Disabled,
-                    PinMode.Output => throw new InvalidOperationException("Input port"),
-                    PinMode.InputPullDown => ResistorMode.InternalPullDown,
-                    PinMode.InputPullUp => ResistorMode.InternalPullUp,
-                    _ => throw new ArgumentOutOfRangeException()
-                };
-            }
-            set => Controller.SetPinMode(GpioPin.GPIO, GetPinInputMode(value));
-        }
-
-        private PinEventTypes GetPinEventMode(InterruptMode interruptMode)
-        {
-            return interruptMode switch
-            {
-                InterruptMode.None => PinEventTypes.None,
-                InterruptMode.EdgeFalling => PinEventTypes.Falling,
-                InterruptMode.EdgeRising => PinEventTypes.Rising,
-                InterruptMode.EdgeBoth => PinEventTypes.Rising | PinEventTypes.Falling,
-                _ => throw new ArgumentOutOfRangeException(nameof(interruptMode), interruptMode, null)
-            };
-        }
-
-        private void PinValueChanged(object sender, PinValueChangedEventArgs args)
-        {
-            if (Changed != null)
-            {
-                DateTime lastEventTime = LastEventTime;
-                LastEventTime = DateTime.Now;
-                DigitalState? oldState = lastEventTime == DateTime.MinValue ? new DigitalState?() : new DigitalState(!State, lastEventTime);
-                Changed(this, new DigitalPortResult(new DigitalState(State, LastEventTime), oldState));
-            }
-        }
-
-        private PinMode GetPinInputMode(ResistorMode resistor)
-        {
-            return resistor switch
-            {
-                ResistorMode.Disabled => PinMode.Input,
-                ResistorMode.InternalPullDown => PinMode.InputPullDown,
-                ResistorMode.InternalPullUp => PinMode.InputPullUp,
-                ResistorMode.ExternalPullDown => PinMode.Input,
-                ResistorMode.ExternalPullUp => PinMode.Input,
-                _ => throw new ArgumentOutOfRangeException(nameof(resistor), resistor, null)
-            };
-        }
-    }
-
-    public class OutputPort : IDigitalOutputPort
-    {
-        private bool _state;
-
-        public OutputPort(GpioPin pin, bool initialValue)
-        {
-            GpioPin = pin;
-            _state = initialValue;
-            Controller.OpenPin(pin.GPIO, PinMode.Output, _state);
-        }
-
-        protected GpioController Controller => GpioPin._controller;
-
-        protected GpioPin GpioPin { get; }
-
-        public void Dispose()
-        {
-            if (Controller.IsPinOpen(GpioPin.GPIO))
-                Controller.ClosePin(GpioPin.GPIO);
-        }
-
-        public IDigitalChannelInfo Channel => throw new NotImplementedException(nameof(Channel));
-
-        public IPin Pin => GpioPin;
-
-        public bool InitialState => throw new NotImplementedException(nameof(InitialState));
-
-        public bool State
-        {
-            get => _state;
-            set
-            {
-                _state = value;
-                Controller.Write(GpioPin.GPIO, _state);
-            }
-        }
+            DebounceDuration = debounceMs
+        };
     }
 }

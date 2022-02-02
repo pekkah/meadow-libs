@@ -29,7 +29,7 @@ namespace Chibi.Ui.MicroGraphics
         private IEnumerable<Renderable> Children()
         {
             yield return _icon();
-            yield return new Text(_text, () => TextAlignment.Center, height: ()=> 22);
+            yield return new Text(_text, () => TextAlignment.Center, height: ()=> Length.Auto);
         }
 
         public override void Render(RenderingContext context)

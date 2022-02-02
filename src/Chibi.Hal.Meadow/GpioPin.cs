@@ -20,12 +20,12 @@ public class GpioPin : IPin
 
     public object Key => _pin.Key;
 
-    public IDigitalOutputPort AsOutput(bool initialState = false)
+    public IDigitalOutputPort ToOutput(bool initialState = false)
     {
         return _device.CreateDigitalOutputPort(_pin, initialState);
     }
 
-    public IDigitalInputPort AsInput(
+    public IDigitalInputPort ToInput(
         ResistorMode resistorMode,
         InterruptMode interruptMode,
         double debounceDuration = 0D,
@@ -34,7 +34,7 @@ public class GpioPin : IPin
         return _device.CreateDigitalInputPort(_pin, interruptMode, resistorMode, debounceDuration, glitchDuration);
     }
 
-    public IAnalogInputPort AsAnalogInput(int sampleCount = 5, int sampleIntervalMs = 40, float voltageReference = 3.3f)
+    public IAnalogInputPort ToAnalogInput(int sampleCount = 5, int sampleIntervalMs = 40, float voltageReference = 3.3f)
     {
         return _device.CreateAnalogInputPort(_pin, sampleCount, sampleIntervalMs, voltageReference);
     }

@@ -81,7 +81,7 @@ namespace Chibi.Ui.Simple.Screens
                 var offsetY = Math.Max(0, mY - (buffer.Height / 2));
 
                 context.DrawBuffer(offsetX, offsetY, buffer);
-            }, () => Length.Auto, () => Length.Auto);
+            }, () => buffer.Width, () => buffer.Height);
         }
 
         public void Render(RenderingContext context)

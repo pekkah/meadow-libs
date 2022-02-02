@@ -5,7 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RSyncEnabled>false</RSyncEnabled>
+    <RSyncEnabled>true</RSyncEnabled>
     <RsyncDestination>pi@192.168.1.21</RsyncDestination>
     <IsPackable>false</IsPackable>
   </PropertyGroup>

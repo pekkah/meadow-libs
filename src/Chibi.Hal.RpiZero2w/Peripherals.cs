@@ -13,13 +13,13 @@ public static class Peripherals
     {
         var i2c1 = GPIOCHIP0.I2C1;
         //todo: lock pins
-        return new I2CBus(1);
+        return new I2cBusAdapter(1);
     }
     
-    public static ISpiBus CreateSPI0()
+    public static ISpiBus CreateSPI0(SpiClockConfiguration configuration)
     {
         var spi0 = GPIOCHIP0.SPI0;
-
-        return new SpiBus();
+        //todo: lock pins
+        return new SpiBusAdapter(0, configuration);
     }
 }

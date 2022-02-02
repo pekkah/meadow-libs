@@ -13,8 +13,8 @@ var logger = Log.ForContext<Program>();
 var gpio = Peripherals.GPIOCHIP0;
 
 // We require four 
-using var leftButtonInput = gpio.GPIO21.AsInput(ResistorMode.InternalPullUp, InterruptMode.EdgeFalling);
-using var rightButtonInput = gpio.GPIO20.AsInput(ResistorMode.InternalPullUp, InterruptMode.EdgeFalling);
+using var leftButtonInput = gpio.GPIO21.ToInput(ResistorMode.InternalPullUp, InterruptMode.EdgeFalling, 1000);
+using var rightButtonInput = gpio.GPIO20.ToInput(ResistorMode.InternalPullUp, InterruptMode.EdgeFalling, 1000);
 using var displayBus = Peripherals.CreateI2C1();
 
 logger.Information("Initialize controls");
@@ -31,11 +31,13 @@ var display = new Ssd1306(displayBus)
 };
 var graphics = new MicroGraphics(display)
 {
-    PenColor = Color.White,
-    CurrentFont = new Font6x8()
+    PenColor = Color.White
 };
 
-var renderingContext = new RenderingContext(graphics);
+var renderingContext = new RenderingContext(graphics)
+{
+    DefaultFont = new Font4x6()
+};
 var screen = new MainMenuScreen(display.Width, display.Height);
 
 leftButton.Clicked += (_, _) =>
