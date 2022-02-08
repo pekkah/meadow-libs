@@ -37,7 +37,7 @@
   <ItemGroup>
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="System.Memory" Version="4.5.4" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="System.Text.Json" Version="6.0.1" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="System.Text.Json" Version="6.0.2" PrivateAssets="all" GeneratePathProperty="true" />
   </ItemGroup>
   
   <ItemGroup>
