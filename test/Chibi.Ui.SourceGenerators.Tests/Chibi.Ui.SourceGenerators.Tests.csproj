@@ -41,7 +41,7 @@
     <PackageReference Include="Verify.XUnit" Version="16.7.0" />
     <PackageReference Include="Verify.SourceGenerators" Version="1.3.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.1.0" PrivateAssets="all" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
     <PackageReference Include="Meadow.Foundation.Displays.MicroGraphics" Version="0.9.46" />
   </ItemGroup>
