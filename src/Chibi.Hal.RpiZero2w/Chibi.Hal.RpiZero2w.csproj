@@ -8,7 +8,7 @@
     <Description>HAL layer for Raspberry Pi Zero 2 W based on the Meadow.Foundation and System.Devices.Gpio</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Device.Gpio" Version="2.0.0" />
+    <PackageReference Include="System.Device.Gpio" Version="2.1.0" />
     <PackageReference Include="Meadow" Version="0.29.1" />
     <PackageReference Include="Meadow.Contracts" Version="0.29.0" />
   </ItemGroup>
