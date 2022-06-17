@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="Meadow" Version="0.29.1" />
-    <PackageReference Include="Meadow.Contracts" Version="0.29.0" />
+    <PackageReference Include="Meadow.Contracts" Version="0.31.1" />
     <PackageReference Include="Meadow.Foundation.Displays.MicroGraphics" Version="0.9.46" />
     <PackageReference Include="Meadow.Foundation.Displays.Ssd130x" Version="0.12.45" />
     <PackageReference Include="Meadow.Units" Version="0.29.0" />
