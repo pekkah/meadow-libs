@@ -9,6 +9,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="Meadow" Version="0.29.1" />
-		<PackageReference Include="Meadow.Foundation.Displays.MicroGraphics" Version="0.9.46" />
+		<PackageReference Include="Meadow.Foundation.Displays.MicroGraphics" Version="0.9.54" />
 	</ItemGroup>
 </Project>
